@@ -1,0 +1,58 @@
+{
+  "mimic_af": {
+    "name": "MIMIC PERform AF",
+    "source": "https://zenodo.org/records/15906524",
+    "license": "ODbL-1.0; AF annotations CC-BY-4.0",
+    "files": [
+      {
+        "path": "mimic_perform_af_data.mat",
+        "url": "https://zenodo.org/records/15906524/files/mimic_perform_af_data.mat?download=1",
+        "sha256": "30ceb4ee4e0d4827b7244e2ee1d0cfe5ee74849c529aba673ce8e471ea77cc4e",
+        "bytes": 20603819
+      },
+      {
+        "path": "mimic_perform_non_af_data.mat",
+        "url": "https://zenodo.org/records/15906524/files/mimic_perform_non_af_data.mat?download=1",
+        "sha256": "dc53179ef195cacc4a9ddceae8525aa3a30ffd8628be8506f0048a0ef102af6b",
+        "bytes": 17752712
+      }
+    ]
+  },
+  "dalia": {
+    "name": "PPG-DaLiA",
+    "source": "https://archive.ics.uci.edu/dataset/495/ppg%2Bdalia",
+    "license": "CC-BY-4.0",
+    "files": [
+      {
+        "path": "ppg_dalia.zip",
+        "url": "https://archive.ics.uci.edu/static/public/495/ppg%2Bdalia.zip",
+        "sha256": "5772387956e34e2e2dc4c2ddbeb98cb70569d5112fa4c13ee98a17680b84a1f3",
+        "bytes": 2865111320
+      }
+    ]
+  },
+  "wrist": {
+    "name": "Wrist PPG During Exercise",
+    "source": "https://physionet.org/content/wrist/1.0.0/",
+    "license": "ODC-By-1.0",
+    "base_url": "https://physionet-open.s3.amazonaws.com/wrist/1.0.0/",
+    "checksums_sha256": "3d187a65462656a830072f536363f44c7e48c05fc251fbf3025c23c3f11e732e",
+    "root_only": false
+  },
+  "ptt": {
+    "name": "Pulse Transit Time PPG",
+    "source": "https://physionet.org/content/pulse-transit-time-ppg/1.1.0/",
+    "license": "ODbL-1.0",
+    "base_url": "https://physionet-open.s3.amazonaws.com/pulse-transit-time-ppg/1.1.0/",
+    "checksums_sha256": "02b3393e8aecc711a6ec56c19c1c3c9bb6ac0048691780f2c815318dd5c3a3de",
+    "root_only": true
+  },
+  "but": {
+    "name": "BUT PPG",
+    "source": "https://physionet.org/content/butppg/2.0.0/",
+    "license": "CC-BY-4.0",
+    "base_url": "https://physionet-open.s3.amazonaws.com/butppg/2.0.0/",
+    "checksums_sha256": "3536e14265e271d4e4bf8494e714547ac7ed691f37f5ea28ed8f62e3dcc8a0db",
+    "root_only": false
+  }
+}

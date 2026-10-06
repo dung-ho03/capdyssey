@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-05",
+  "existing": {
+    "checked_files": 218,
+    "missing": [],
+    "hash_mismatch": []
+  },
+  "ptt_ppg": {
+    "headers": 66,
+    "official_checksums_checked": 203,
+    "checksum_mismatches": [],
+    "missing_from_selected_manifest": [],
+    "bytes": 438165590,
+    "waveform_size_errors": [],
+    "records": 66
+  },
+  "butppg": {
+    "headers": 11616,
+    "official_checksums_checked": 27125,
+    "checksum_mismatches": [],
+    "missing_from_selected_manifest": [],
+    "bytes": 213136194,
+    "waveform_size_errors": [],
+    "ppg_records": 3888,
+    "acc_records": 3840,
+    "annotation_preview": [
+      [
+        "癤풦D",
+        "Quality",
+        "HR"
+      ],
+      [
+        "100001",
+        "1",
+        "83"
+      ],
+      [
+        "100002",
+        "1",
+        "85"
+      ]
+    ],
+    "annotation_rows": 3889,
+    "quality_counts": {
+      "1": 830,
+      "0": 3058
+    },
+    "subjects_from_ppg_ids": 50
+  }
+}
