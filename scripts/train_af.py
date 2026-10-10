@@ -19,21 +19,23 @@ ROOT = Path(__file__).resolve().parents[1]
 FS = 50
 SECONDS = 30
 
-def preprocess_window(raw, sampling_hz=125):
-    """Shared training/inference contract: exactly 30 seconds of raw PPG."""
+def preprocess_window(raw, sampling_hz=125, seconds=SECONDS):
+    """Shared training/inference contract; legacy default is 30 seconds."""
     from fractions import Fraction
     raw = np.asarray(raw, dtype=np.float64)
     if not np.isfinite(sampling_hz) or sampling_hz < 25 or sampling_hz > 2000:
         raise ValueError('sampling_hz must be between 25 and 2000')
-    expected = sampling_hz * SECONDS
+    if seconds not in (10, 30):
+        raise ValueError('Only 10 or 30 second model inputs are supported')
+    expected = sampling_hz * seconds
     if raw.ndim != 1 or abs(len(raw) - expected) > 1e-6:
-        raise ValueError('Input must be a 1D array containing exactly 30 seconds')
+        raise ValueError(f'Input must be a 1D array containing exactly {seconds} seconds')
     if not np.isfinite(raw).all() or np.std(raw) < 1e-8:
         raise ValueError('Missing, nonfinite, or flat PPG: cannot classify')
     ratio = Fraction(str(FS / sampling_hz)).limit_denominator(10000)
     window = resample_poly(raw, ratio.numerator, ratio.denominator)
     scale = np.std(window)
-    if len(window) != FS * SECONDS or not np.isfinite(window).all() or scale < 1e-8:
+    if len(window) != FS * seconds or not np.isfinite(window).all() or scale < 1e-8:
         raise ValueError('Invalid resampled PPG: cannot classify')
     return ((window - window.mean()) / scale).astype(np.float32)
 
@@ -73,20 +75,20 @@ def split_subjects(records, seed):
     assert not (set(splits['train']) & set(splits['val']) or set(splits['train']) & set(splits['test']) or set(splits['val']) & set(splits['test']))
     return splits
 
-def prepare(records):
+def prepare(records, seconds=SECONDS):
     x, y, subjects, starts = [], [], [], []
     audit = []
     for person, label, values in records:
         kept = 0
-        total = len(values) // (125 * SECONDS)
+        total = len(values) // (125 * seconds)
         for i in range(total):
-            raw = values[i*125*SECONDS:(i+1)*125*SECONDS]
+            raw = values[i*125*seconds:(i+1)*125*seconds]
             try:
-                window = preprocess_window(raw)
+                window = preprocess_window(raw, seconds=seconds)
             except ValueError:
                 continue
             x.append(window)
-            y.append(label); subjects.append(person); starts.append(i*SECONDS); kept += 1
+            y.append(label); subjects.append(person); starts.append(i*seconds); kept += 1
         audit.append({'subject': person, 'label': label, 'total_windows': total, 'kept_windows': kept, 'excluded_windows': total-kept})
     return np.stack(x), np.array(y), np.array(subjects), np.array(starts), audit
 
@@ -121,9 +123,11 @@ def predict(model, loader, device):
     logits, labels = torch.cat(logits), torch.cat(labels)
     return labels.numpy().astype(int), torch.sigmoid(logits).numpy(), float(nn.functional.binary_cross_entropy_with_logits(logits, labels))
 
-def train(data_dir, output, epochs=20, seed=42, batch_size=64, device_name='auto'):
+def train(data_dir, output, epochs=20, seed=42, batch_size=64, device_name='auto', seconds=SECONDS):
     if epochs < 1 or batch_size < 1:
         raise ValueError('epochs and batch_size must be positive')
+    if seconds not in (10, 30):
+        raise ValueError('Only 10 or 30 second inputs are supported')
     output.mkdir(parents=True, exist_ok=False)
     random.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
     torch.set_num_threads(2)
@@ -133,18 +137,19 @@ def train(data_dir, output, epochs=20, seed=42, batch_size=64, device_name='auto
     device = torch.device(('cuda' if torch.cuda.is_available() else 'cpu') if device_name == 'auto' else device_name)
     records = load_records(data_dir)
     splits = split_subjects(records, seed)
-    x, y, persons, starts, audit = prepare(records)
+    x, y, persons, starts, audit = prepare(records, seconds)
     write_json(output/'split.json', splits); write_json(output/'data_audit.json', audit)
     try: commit = subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip()
     except (OSError, subprocess.CalledProcessError): commit = 'unknown'
     config = {'seed': seed, 'epochs': epochs, 'batch_size': batch_size, 'device': str(device), 'sampling_hz': FS,
-              'window_seconds': SECONDS, 'normalization': 'per-window mean/std', 'resampling': '125 to 50 Hz, scipy resample_poly 2/5',
+              'window_seconds': seconds, 'normalization': 'per-window mean/std', 'resampling': '125 to 50 Hz, scipy resample_poly 2/5',
               'quality_filter': 'nonfinite and near-zero variance only; NOT clinical signal quality',
-              'model': 'small_cnn_v1', 'threshold': 0.5, 'git_commit': commit,
+              'model': 'small_cnn_v1' if seconds == 30 else 'small_cnn_10s_v1', 'threshold': 0.5, 'git_commit': commit,
+              'datasets_used': ['mimic_perform_af'], 'three_dataset_integrated': False,
               'training_script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'numpy': np.__version__, 'scipy': scipy.__version__, 'torch': str(torch.__version__),
               'source': 'https://zenodo.org/records/15906524',
-              'label_scope': 'AF status supplied per source record; not newly annotated 30-second episodes'}
+              'label_scope': 'AF status supplied per source record; not newly annotated window-level episodes'}
     write_json(output/'config.json', config)
     loaders, masks = {}, {}
     for name, ids in splits.items():
@@ -200,5 +205,6 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--batch-size', type=int, default=64)
     parser.add_argument('--device', choices=['auto','cpu','cuda'], default='auto')
+    parser.add_argument('--seconds', type=int, choices=[10,30], default=30)
     args=parser.parse_args()
-    train(args.data_dir,args.output,args.epochs,args.seed,args.batch_size,args.device)
+    train(args.data_dir,args.output,args.epochs,args.seed,args.batch_size,args.device,args.seconds)

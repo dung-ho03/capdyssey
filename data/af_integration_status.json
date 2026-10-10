@@ -1,0 +1,25 @@
+{
+  "window_seconds": 10,
+  "model_sampling_hz": 50,
+  "model_input_samples": 500,
+  "three_dataset_training_ready": false,
+  "datasets": {
+    "mimic_perform_af": {
+      "label_mapping": {"0": 0, "1": 1},
+      "ready": true,
+      "scope": "Record-level labels, 35 subjects; prior test subjects already used in development"
+    },
+    "six_rhythms": {
+      "label_mapping": {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 1},
+      "ready": false,
+      "reason": "Research citation invitation verified; explicit training/derived-sharing scope remains unresolved in stage 1",
+      "source": "https://github.com/zdzdliu/PPGArrhythmiaDetection"
+    },
+    "longterm_wrist_v3": {
+      "label_mapping": null,
+      "ready": false,
+      "reason": "Numeric label definitions and QRS/RR annotation alignment not confirmed; only 2/39 subjects acquired",
+      "source": "https://zenodo.org/records/23187681"
+    }
+  }
+}

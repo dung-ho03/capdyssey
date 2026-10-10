@@ -1,0 +1,24 @@
+{
+  "seed": 42,
+  "epochs": 20,
+  "batch_size": 64,
+  "device": "cpu",
+  "sampling_hz": 50,
+  "window_seconds": 10,
+  "normalization": "per-window mean/std",
+  "resampling": "125 to 50 Hz, scipy resample_poly 2/5",
+  "quality_filter": "nonfinite and near-zero variance only; NOT clinical signal quality",
+  "model": "small_cnn_10s_v1",
+  "threshold": 0.5,
+  "git_commit": "9415b5b7fc426705cc402ef2fac5fdf721186f93",
+  "datasets_used": [
+    "mimic_perform_af"
+  ],
+  "three_dataset_integrated": false,
+  "training_script_sha256": "ec48211f74cfaafcfcc10b02463f1722b3522120721dcc193c705f929ec05b0a",
+  "numpy": "2.1.3",
+  "scipy": "1.15.2",
+  "torch": "2.9.1+cpu",
+  "source": "https://zenodo.org/records/15906524",
+  "label_scope": "AF status supplied per source record; not newly annotated window-level episodes"
+}

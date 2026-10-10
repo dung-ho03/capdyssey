@@ -12,6 +12,22 @@ spec=importlib.util.spec_from_file_location('train_af',Path(__file__).resolve().
 module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
 
 class TrainingTests(unittest.TestCase):
+    def test_ten_second_checkpoint_contract(self):
+        wave=np.sin(np.arange(1250)/10)
+        x, _, _, starts, _=module.prepare([('p',1,np.concatenate([wave,wave]))],seconds=10)
+        self.assertEqual(x.shape,(2,500))
+        self.assertEqual(starts.tolist(),[0,10])
+        self.assertEqual(module.preprocess_window(np.sin(np.arange(1000)/10),100,10).shape,(500,))
+        model=module.make_model().eval()
+        with torch.no_grad(): expected=torch.sigmoid(model(torch.from_numpy(x[:1,None]))).item()
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'model.pt'
+            torch.save({'state_dict':model.state_dict(),'config':{
+                'model':'small_cnn_10s_v1','sampling_hz':50,'window_seconds':10,'threshold':.5}},path)
+            self.assertAlmostEqual(classify(path,wave,125)['af_score'],expected,places=6)
+            with self.assertRaises(ValueError): classify(path,np.tile(wave,3),125)
+        with self.assertRaises(ValueError): module.preprocess_window(wave,125)
+
     def test_inference_roundtrip_matches_training(self):
         wave = np.sin(np.arange(3750)/10)
         model = module.make_model().eval()

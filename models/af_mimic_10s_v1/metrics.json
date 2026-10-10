@@ -1,0 +1,50 @@
+{
+  "best_epoch": 2,
+  "validation_window_metrics": {
+    "threshold": 0.5,
+    "n": 838,
+    "tp": 298,
+    "fn": 180,
+    "tn": 231,
+    "fp": 129,
+    "accuracy": 0.6312649164677804,
+    "sensitivity": 0.6234309623430963,
+    "specificity": 0.6416666666666667,
+    "false_positive_rate": 0.35833333333333334,
+    "balanced_accuracy": 0.6325488145048814,
+    "f1": 0.6585635359116022,
+    "roc_auc": 0.6564969781496978
+  },
+  "selection": "Lowest validation BCE; fixed threshold 0.5; no test-based tuning",
+  "test_window_metrics": {
+    "threshold": 0.5,
+    "n": 776,
+    "tp": 139,
+    "fn": 334,
+    "tn": 209,
+    "fp": 94,
+    "accuracy": 0.4484536082474227,
+    "sensitivity": 0.2938689217758985,
+    "specificity": 0.6897689768976898,
+    "false_positive_rate": 0.3102310231023102,
+    "balanced_accuracy": 0.49181894933679415,
+    "f1": 0.3937677053824363,
+    "roc_auc": 0.5701546898875934
+  },
+  "test_subject_mean_score_metrics": {
+    "threshold": 0.5,
+    "n": 7,
+    "tp": 0,
+    "fn": 4,
+    "tn": 2,
+    "fp": 1,
+    "accuracy": 0.2857142857142857,
+    "sensitivity": 0.0,
+    "specificity": 0.6666666666666666,
+    "false_positive_rate": 0.3333333333333333,
+    "balanced_accuracy": 0.3333333333333333,
+    "f1": 0.0,
+    "roc_auc": 0.4166666666666667
+  },
+  "warning": "Small 35-subject bedside dataset; held-out subjects, not external validation. No IMU or clinical diagnosis validation."
+}
