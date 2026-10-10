@@ -1,0 +1,487 @@
+{
+  "source": "https://zenodo.org/records/23187681",
+  "verified_date": "2026-10-10",
+  "license": "CC-BY-NC-SA-4.0 (attached LICENSE.txt); metadata other-nc",
+  "files": [
+    {
+      "path": "LICENSE.txt",
+      "url": "https://zenodo.org/records/23187681/files/LICENSE.txt?download=1",
+      "bytes": 14702,
+      "md5": "ea9a96ba6cf0d0c08f39ed4665c32c1e"
+    },
+    {
+      "path": "subject_info.xlsx",
+      "url": "https://zenodo.org/records/23187681/files/subject_info.xlsx?download=1",
+      "bytes": 18076,
+      "md5": "fdb8dd2c5568c158386d2cfea387e485"
+    },
+    {
+      "path": "001_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/001_ECG.mat?download=1",
+      "bytes": 675027202,
+      "md5": "4841fbcea6c33bd2bd4c002ba28a2473"
+    },
+    {
+      "path": "001_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/001_PPG.mat?download=1",
+      "bytes": 1299977412,
+      "md5": "98e6a60c08f828aed14607d297c57345"
+    },
+    {
+      "path": "002_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/002_ECG.mat?download=1",
+      "bytes": 558450054,
+      "md5": "3a7e3e74350e08084f7deaf38ee9cef5"
+    },
+    {
+      "path": "002_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/002_PPG.mat?download=1",
+      "bytes": 1087338569,
+      "md5": "d0447c152776de6e616eb50cb5dc75e2"
+    },
+    {
+      "path": "003_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/003_ECG.mat?download=1",
+      "bytes": 389061480,
+      "md5": "0d882f9dc734ba521a7bc16e6441551b"
+    },
+    {
+      "path": "003_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/003_PPG.mat?download=1",
+      "bytes": 1053505546,
+      "md5": "be791a97a1c0396066255b797cdb1d13"
+    },
+    {
+      "path": "004_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/004_ECG.mat?download=1",
+      "bytes": 732117641,
+      "md5": "d36ec355ec0f6c48d96bc9efc2004e15"
+    },
+    {
+      "path": "004_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/004_PPG.mat?download=1",
+      "bytes": 1256845062,
+      "md5": "b1ac198db3588c22b553e5b0def82e04"
+    },
+    {
+      "path": "005_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/005_ECG.mat?download=1",
+      "bytes": 370896240,
+      "md5": "3b07bdb423f5539d941092cdc4870626"
+    },
+    {
+      "path": "005_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/005_PPG.mat?download=1",
+      "bytes": 678182135,
+      "md5": "56bee10331f0ff2df4b175e1e51b7373"
+    },
+    {
+      "path": "006_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/006_ECG.mat?download=1",
+      "bytes": 605635053,
+      "md5": "25b6aeef63a1b6bec60a8b25e2e46030"
+    },
+    {
+      "path": "006_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/006_PPG.mat?download=1",
+      "bytes": 70524702,
+      "md5": "9ca7d4a9c5a7f4b371a25689e92f647c"
+    },
+    {
+      "path": "007_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/007_ECG.mat?download=1",
+      "bytes": 595580714,
+      "md5": "49199a79814bea74fcc94bb017cc9f54"
+    },
+    {
+      "path": "007_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/007_PPG.mat?download=1",
+      "bytes": 1052404093,
+      "md5": "3959311c7eb293d865cd7d27b6315a8a"
+    },
+    {
+      "path": "008_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/008_ECG.mat?download=1",
+      "bytes": 571744488,
+      "md5": "0e3f12572d3cd14e35bff2805673760f"
+    },
+    {
+      "path": "008_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/008_PPG.mat?download=1",
+      "bytes": 1155870944,
+      "md5": "b510b8af23875018b36d79db7c4e7334"
+    },
+    {
+      "path": "009_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/009_ECG.mat?download=1",
+      "bytes": 561108404,
+      "md5": "cc649d22b5ea4885f1bde7195997ccc7"
+    },
+    {
+      "path": "009_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/009_PPG.mat?download=1",
+      "bytes": 641990235,
+      "md5": "2a750353d2a5c4378022c27c1145eeea"
+    },
+    {
+      "path": "010_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/010_ECG.mat?download=1",
+      "bytes": 609918463,
+      "md5": "071cc6d585d70544c2b1e29ac2ae919e"
+    },
+    {
+      "path": "010_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/010_PPG.mat?download=1",
+      "bytes": 1167371911,
+      "md5": "f515159895a5110bc821889fea9d3176"
+    },
+    {
+      "path": "011_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/011_ECG.mat?download=1",
+      "bytes": 629154702,
+      "md5": "a185dad5f41f0e84a6ae2187b304a974"
+    },
+    {
+      "path": "011_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/011_PPG.mat?download=1",
+      "bytes": 1246718055,
+      "md5": "331749959cce32b18bc8c2efd9c8a128"
+    },
+    {
+      "path": "012_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/012_ECG.mat?download=1",
+      "bytes": 568715504,
+      "md5": "20672772bd2d820490d2cf1fe54649ab"
+    },
+    {
+      "path": "012_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/012_PPG.mat?download=1",
+      "bytes": 1623264971,
+      "md5": "77f56f17cb4f613802773bbb4fb8aaac"
+    },
+    {
+      "path": "013_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/013_ECG.mat?download=1",
+      "bytes": 585798674,
+      "md5": "b6358433cf8b8b362ba282700a5f2f99"
+    },
+    {
+      "path": "013_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/013_PPG.mat?download=1",
+      "bytes": 424965243,
+      "md5": "61b1cfdaf6492cabc2aa64ac191b4780"
+    },
+    {
+      "path": "014_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/014_ECG.mat?download=1",
+      "bytes": 627493130,
+      "md5": "bb8f9cf3fe6ddd5b8e0ca996690f9ee9"
+    },
+    {
+      "path": "014_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/014_PPG.mat?download=1",
+      "bytes": 711903987,
+      "md5": "260d77763372cdbbc3056e2d2274dfd4"
+    },
+    {
+      "path": "015_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/015_ECG.mat?download=1",
+      "bytes": 539629621,
+      "md5": "817757cd4206bbdffdca5ed93a368d5b"
+    },
+    {
+      "path": "015_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/015_PPG.mat?download=1",
+      "bytes": 1074167647,
+      "md5": "9179e4a06491a60d02e17c6188908ed1"
+    },
+    {
+      "path": "016_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/016_ECG.mat?download=1",
+      "bytes": 614148342,
+      "md5": "d3413ff9bfc02aab862b095eb8604ede"
+    },
+    {
+      "path": "016_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/016_PPG.mat?download=1",
+      "bytes": 1098134100,
+      "md5": "db1bac05b2e34b1afcd4201d9aa8d828"
+    },
+    {
+      "path": "017_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/017_ECG.mat?download=1",
+      "bytes": 620235829,
+      "md5": "c7f46fb771d9b5b0470b16f450682e49"
+    },
+    {
+      "path": "017_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/017_PPG.mat?download=1",
+      "bytes": 1277311968,
+      "md5": "7606c74fba57f5f6c3145a68ac858760"
+    },
+    {
+      "path": "018_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/018_ECG.mat?download=1",
+      "bytes": 557947399,
+      "md5": "39d297b68eddce968952b4062e926ddc"
+    },
+    {
+      "path": "018_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/018_PPG.mat?download=1",
+      "bytes": 1343330864,
+      "md5": "8e5d6a023408396d45298bccc73ec816"
+    },
+    {
+      "path": "019_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/019_ECG.mat?download=1",
+      "bytes": 674754163,
+      "md5": "83df8041493ac5fa2dcc6beb4446678d"
+    },
+    {
+      "path": "019_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/019_PPG.mat?download=1",
+      "bytes": 1193805901,
+      "md5": "fcff24f52162b72e833ccc64eca15e10"
+    },
+    {
+      "path": "020_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/020_ECG.mat?download=1",
+      "bytes": 674731723,
+      "md5": "e588700a551922b4aa7075dbe1d89adc"
+    },
+    {
+      "path": "020_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/020_PPG.mat?download=1",
+      "bytes": 1181587605,
+      "md5": "523dccfa2e9dcac185c0f093cfe15bc3"
+    },
+    {
+      "path": "021_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/021_ECG.mat?download=1",
+      "bytes": 532314419,
+      "md5": "803a56af3d7bd38af3dc4ce9c2c8943f"
+    },
+    {
+      "path": "021_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/021_PPG.mat?download=1",
+      "bytes": 1170557021,
+      "md5": "d2f56a3233523a01523a5317314a46a1"
+    },
+    {
+      "path": "022_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/022_ECG.mat?download=1",
+      "bytes": 1682735321,
+      "md5": "1d5f4e7c0585c7f9dbf36ebb0a132ad4"
+    },
+    {
+      "path": "022_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/022_PPG.mat?download=1",
+      "bytes": 1143165209,
+      "md5": "ce7a12372b7990a7361056ed83db9ead"
+    },
+    {
+      "path": "023_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/023_ECG.mat?download=1",
+      "bytes": 1300910384,
+      "md5": "432603a6e6a601cbed046a9363370273"
+    },
+    {
+      "path": "023_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/023_PPG.mat?download=1",
+      "bytes": 1444948459,
+      "md5": "2315959e9726408aedf785f199ad4622"
+    },
+    {
+      "path": "024_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/024_ECG.mat?download=1",
+      "bytes": 539939150,
+      "md5": "7c7e5cbc260eaa077c7a3da8bcfe2078"
+    },
+    {
+      "path": "024_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/024_PPG.mat?download=1",
+      "bytes": 996750328,
+      "md5": "fade3a7fd28da57424fff922b8ee9166"
+    },
+    {
+      "path": "025_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/025_ECG.mat?download=1",
+      "bytes": 539936759,
+      "md5": "3b19c99373e12007159709108c9334aa"
+    },
+    {
+      "path": "025_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/025_PPG.mat?download=1",
+      "bytes": 509453176,
+      "md5": "faa0706c2b351369a792b2ffe0708288"
+    },
+    {
+      "path": "026_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/026_ECG.mat?download=1",
+      "bytes": 523386997,
+      "md5": "090b79dd552c023f30fcda7a8fc9ed63"
+    },
+    {
+      "path": "026_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/026_PPG.mat?download=1",
+      "bytes": 1270402300,
+      "md5": "5d30593665f4048e9e809a98f8101c22"
+    },
+    {
+      "path": "027_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/027_ECG.mat?download=1",
+      "bytes": 1602551126,
+      "md5": "97c6d48e26dbd2461e172614256abb4e"
+    },
+    {
+      "path": "027_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/027_PPG.mat?download=1",
+      "bytes": 1122908352,
+      "md5": "13f76517234ec399258d0c6337428d22"
+    },
+    {
+      "path": "028_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/028_ECG.mat?download=1",
+      "bytes": 544079386,
+      "md5": "b7a5d8052a0fef2bd4b575375e070840"
+    },
+    {
+      "path": "028_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/028_PPG.mat?download=1",
+      "bytes": 1120218547,
+      "md5": "ca6f190dd8579696a3515ef9064973d4"
+    },
+    {
+      "path": "029_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/029_ECG.mat?download=1",
+      "bytes": 1050050401,
+      "md5": "40677551d5a7e938ceba4636edc4f257"
+    },
+    {
+      "path": "029_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/029_PPG.mat?download=1",
+      "bytes": 564958849,
+      "md5": "b7b07238c55c717ccc0ec54cebe356e1"
+    },
+    {
+      "path": "030_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/030_ECG.mat?download=1",
+      "bytes": 552341277,
+      "md5": "5106432c546f6ce432c8211aac6e3bb4"
+    },
+    {
+      "path": "030_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/030_PPG.mat?download=1",
+      "bytes": 795557775,
+      "md5": "8b21e01192a5221d37794e1c793a1ed9"
+    },
+    {
+      "path": "031_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/031_ECG.mat?download=1",
+      "bytes": 590038249,
+      "md5": "2f5df7239391bc2f9868222384fd8f6b"
+    },
+    {
+      "path": "031_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/031_PPG.mat?download=1",
+      "bytes": 437597232,
+      "md5": "ef7e5c2bddd5782959fb9d21aceedfe7"
+    },
+    {
+      "path": "032_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/032_ECG.mat?download=1",
+      "bytes": 1085137358,
+      "md5": "7d03b28cf72c146782ffe3e8cf79c642"
+    },
+    {
+      "path": "032_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/032_PPG.mat?download=1",
+      "bytes": 569872182,
+      "md5": "22885888dd6ad4cd9daa27532830dfe9"
+    },
+    {
+      "path": "033_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/033_ECG.mat?download=1",
+      "bytes": 516564899,
+      "md5": "ef1a4daa62f7d33e001322ecc37e4d00"
+    },
+    {
+      "path": "033_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/033_PPG.mat?download=1",
+      "bytes": 1018498799,
+      "md5": "5495d0a1d51ec50b66ad8c6de9f07578"
+    },
+    {
+      "path": "034_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/034_ECG.mat?download=1",
+      "bytes": 303297367,
+      "md5": "7d837de7df73acacdce32a303a829862"
+    },
+    {
+      "path": "034_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/034_PPG.mat?download=1",
+      "bytes": 1190114061,
+      "md5": "4bf9e27559c2494e5af6547a6338b3ae"
+    },
+    {
+      "path": "035_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/035_ECG.mat?download=1",
+      "bytes": 1548793039,
+      "md5": "6b9d04b694b093d0fd617ab01b2e20a2"
+    },
+    {
+      "path": "035_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/035_PPG.mat?download=1",
+      "bytes": 290866975,
+      "md5": "2dae36b9404a7b2e5c52512f1d8be509"
+    },
+    {
+      "path": "036_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/036_ECG.mat?download=1",
+      "bytes": 495375217,
+      "md5": "3c19c7ae8385ec3a48cf663aed930dea"
+    },
+    {
+      "path": "036_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/036_PPG.mat?download=1",
+      "bytes": 988767676,
+      "md5": "dc741d233eef651d632e29ab6b8aa797"
+    },
+    {
+      "path": "037_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/037_ECG.mat?download=1",
+      "bytes": 689420014,
+      "md5": "c4bf7ac7e915e8d13bb12d15f5270fce"
+    },
+    {
+      "path": "037_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/037_PPG.mat?download=1",
+      "bytes": 1011641066,
+      "md5": "56f5265264add9eb0e3afeea37e9e55c"
+    },
+    {
+      "path": "038_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/038_ECG.mat?download=1",
+      "bytes": 638039121,
+      "md5": "18b0e057554f6d7bc9942ef07b34a6b9"
+    },
+    {
+      "path": "038_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/038_PPG.mat?download=1",
+      "bytes": 188680343,
+      "md5": "94b227b24b4b2f6b26f518bbb7381011"
+    },
+    {
+      "path": "039_ECG.mat",
+      "url": "https://zenodo.org/records/23187681/files/039_ECG.mat?download=1",
+      "bytes": 427088874,
+      "md5": "b7f4db8b661aa4e7ed1a246f5cc25a74"
+    },
+    {
+      "path": "039_PPG.mat",
+      "url": "https://zenodo.org/records/23187681/files/039_PPG.mat?download=1",
+      "bytes": 315258419,
+      "md5": "5d09dc87fba46a8193871e92c27c6fac"
+    }
+  ]
+}

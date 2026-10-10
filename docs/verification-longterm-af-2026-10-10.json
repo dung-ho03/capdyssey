@@ -1,0 +1,173 @@
+{
+  "verified_date": "2026-10-10",
+  "source": "https://zenodo.org/records/23187681",
+  "license": "CC BY-NC-SA 4.0 (attached LICENSE.txt)",
+  "environment": "Local Windows Python; new Colab notebook syntax checked, not executed in Colab",
+  "verified_bytes": 1418539826,
+  "verified_files": [
+    {
+      "path": "LICENSE.txt",
+      "bytes": 14702,
+      "md5": "ea9a96ba6cf0d0c08f39ed4665c32c1e",
+      "sha256": "03c86e2fb00b7ea4d49c26a80930174b6fb44338a1498da4e711a7a935d0ea30"
+    },
+    {
+      "path": "subject_info.xlsx",
+      "bytes": 18076,
+      "md5": "fdb8dd2c5568c158386d2cfea387e485",
+      "sha256": "34af401bd487ca662c795c3f3ca492483aaa30aab503cbe20ec09db3ca751dd6"
+    },
+    {
+      "path": "006_ECG.mat",
+      "bytes": 605635053,
+      "md5": "25b6aeef63a1b6bec60a8b25e2e46030",
+      "sha256": "f7fbfff8a04c67018f5a620fded95a09047d9657d59c74425e80f71db2a0d869"
+    },
+    {
+      "path": "006_PPG.mat",
+      "bytes": 70524702,
+      "md5": "9ca7d4a9c5a7f4b371a25689e92f647c",
+      "sha256": "43cc543b581e1e864075216cbb210b4837ce5562a414311c7d9611755a838bd4"
+    },
+    {
+      "path": "039_ECG.mat",
+      "bytes": 427088874,
+      "md5": "b7f4db8b661aa4e7ed1a246f5cc25a74",
+      "sha256": "08204a5cbe84575dedde70bb5e840776d46189f4e813b92bcd3b11ddc6a783e5"
+    },
+    {
+      "path": "039_PPG.mat",
+      "bytes": 315258419,
+      "md5": "5d09dc87fba46a8193871e92c27c6fac",
+      "sha256": "23c56a4c25402285985403cdddfa39177b4a4777c2287e32e0812d7fd8aa90b3"
+    }
+  ],
+  "structure_audit": {
+    "source": "https://zenodo.org/records/23187681",
+    "subjects": [
+      {
+        "subject": "006",
+        "PPG_keys": [
+          "Accelerometer_X",
+          "Accelerometer_Y",
+          "Accelerometer_Z",
+          "PPG_AMBIENT",
+          "PPG_GREEN",
+          "recording_startday",
+          "recording_starttime",
+          "signalHeader"
+        ],
+        "ppg_segment_samples": [
+          1065971,
+          861600,
+          287100,
+          1062500
+        ],
+        "ppg_hours_at_documented_100hz": 9.103252777777778,
+        "ppg_nonfinite_samples": 0,
+        "ECG_keys": [
+          "AF_annotation",
+          "Accelerometer_X",
+          "Accelerometer_Y",
+          "Accelerometer_Z",
+          "ECG",
+          "QRSindex",
+          "recording_startday",
+          "recording_starttime",
+          "rr",
+          "signalHeader"
+        ],
+        "annotation_value_counts": {
+          "0.0": 631857,
+          "0.25": 642,
+          "0.5": 132,
+          "1.0": 231991
+        },
+        "annotation_shape": [
+          1,
+          864622
+        ],
+        "qrs_shape": [
+          864623,
+          1
+        ],
+        "rr_shape": [
+          864622,
+          1
+        ],
+        "rr_matches_qrs_difference_at_500hz": true,
+        "requires_label_codebook_confirmation": true,
+        "label_mapping_applied": false
+      },
+      {
+        "subject": "039",
+        "PPG_keys": [
+          "Accelerometer_X",
+          "Accelerometer_Y",
+          "Accelerometer_Z",
+          "PPG_AMBIENT",
+          "PPG_GREEN",
+          "recording_startday",
+          "recording_starttime",
+          "signalHeader"
+        ],
+        "ppg_segment_samples": [
+          1319900,
+          6386100,
+          2333100,
+          2995400,
+          1102900,
+          6557400,
+          4816400,
+          2899900,
+          4899400,
+          1758400,
+          3417400,
+          3609900
+        ],
+        "ppg_hours_at_documented_100hz": 116.93388888888889,
+        "ppg_nonfinite_samples": 0,
+        "ECG_keys": [
+          "AF_annotation",
+          "Accelerometer_X",
+          "Accelerometer_Y",
+          "Accelerometer_Z",
+          "ECG",
+          "QRSindex",
+          "recording_startday",
+          "recording_starttime",
+          "rr",
+          "signalHeader"
+        ],
+        "annotation_value_counts": {
+          "0.0": 390024,
+          "0.25": 88,
+          "0.5": 28,
+          "1.0": 129136
+        },
+        "annotation_shape": [
+          1,
+          519276
+        ],
+        "qrs_shape": [
+          519277,
+          1
+        ],
+        "rr_shape": [
+          519276,
+          1
+        ],
+        "rr_matches_qrs_difference_at_500hz": true,
+        "requires_label_codebook_confirmation": true,
+        "label_mapping_applied": false
+      }
+    ],
+    "scope": "File integrity and structure only; not aligned/labeled 30-second training windows."
+  },
+  "training_ready": false,
+  "pending": [
+    "Confirm annotation numeric code meanings",
+    "Align PPG timestamps with ECG interval annotations",
+    "Fix subject-level splits before generating training windows"
+  ]
+}

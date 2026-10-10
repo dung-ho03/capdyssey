@@ -3,6 +3,12 @@ Capstone Design in hallym university
 
 PPG에서 심방세동 의심 구간을 탐지하고, 움직임 정보를 활용한 신호 품질 처리를 연구합니다.
 
+## 과적합 징후에 따른 데이터 확장
+
+AI 학습에서 과적합 징후와 낮은 일반화 성능을 확인하여 더 많은 참가자의 AF·비AF 데이터가 필요하다고 판단했습니다. 학습 손실이 감소하는 동안 검증 손실이 증가한 실제 Colab 기록을 근거로, 39명의 장기 손목 PPG·ECG·AF 주석을 제공하는 공개 v3 자료를 추가 확보 대상으로 선정했습니다. 데이터 부족이 유일한 원인으로 확정된 것은 아니며 새 자료로 재학습한 결과는 아직 없습니다.
+
+[확장 이유·자료 이용 조건·확보 상태](docs/AF_DATA_EXPANSION.md) · [추가 자료 Colab 다운로드](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/02_additional_af_data_colab.ipynb)
+
 ## 학습 완료된 AF/비AF v1
 
 [실측 결과·사용법·한계](docs/AF_MODEL_V1.md) · [저장된 모델](models/af_mimic_v1/best_model.pt)
