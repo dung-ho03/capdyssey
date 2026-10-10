@@ -1,0 +1,245 @@
+{
+  "scope": "Nominal timestamp coverage and preprocessing compatibility only; no rhythm labels assigned, no clinical quality validation or model evaluation.",
+  "subjects": [
+    {
+      "subject": "006",
+      "ecg_start_seconds_from_day1": 50065,
+      "ecg_end_seconds_from_day1": 710100.0,
+      "qrs_strictly_increasing": true,
+      "qrs_inside_ecg_under_1based_convention": true,
+      "annotation_attributes": {
+        "MATLAB_class": "b'double'"
+      },
+      "annotation_code_meanings_confirmed": false,
+      "segments": [
+        {
+          "start_seconds_from_day1": 49116,
+          "end_seconds_from_day1": 59775.71,
+          "ppg_seconds": 10659.71,
+          "nominal_ecg_overlap_seconds": 9710.71,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": -7.629394893626795e-09,
+            "std": 0.9999998807907104
+          }
+        },
+        {
+          "start_seconds_from_day1": 116081,
+          "end_seconds_from_day1": 124697.0,
+          "ppg_seconds": 8616.0,
+          "nominal_ecg_overlap_seconds": 8616.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 2.034505186543356e-08,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 129549,
+          "end_seconds_from_day1": 132420.0,
+          "ppg_seconds": 2871.0,
+          "nominal_ecg_overlap_seconds": 2871.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 213371,
+          "end_seconds_from_day1": 223996.0,
+          "ppg_seconds": 10625.0,
+          "nominal_ecg_overlap_seconds": 10625.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        }
+      ],
+      "ppg_hours": 9.103252777777778,
+      "nominal_ecg_overlap_hours": 8.839641666666667,
+      "ppg_segments_nonoverlapping": true
+    },
+    {
+      "subject": "039",
+      "ecg_start_seconds_from_day1": 46478,
+      "ecg_end_seconds_from_day1": 569617.0,
+      "qrs_strictly_increasing": true,
+      "qrs_inside_ecg_under_1based_convention": true,
+      "annotation_attributes": {
+        "MATLAB_class": "b'double'"
+      },
+      "annotation_code_meanings_confirmed": false,
+      "segments": [
+        {
+          "start_seconds_from_day1": 78033,
+          "end_seconds_from_day1": 91232.0,
+          "ppg_seconds": 13199.0,
+          "nominal_ecg_overlap_seconds": 13199.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 3.051757957450718e-08,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 91260,
+          "end_seconds_from_day1": 155121.0,
+          "ppg_seconds": 63861.0,
+          "nominal_ecg_overlap_seconds": 63861.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 161842,
+          "end_seconds_from_day1": 185173.0,
+          "ppg_seconds": 23331.0,
+          "nominal_ecg_overlap_seconds": 23331.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 185387,
+          "end_seconds_from_day1": 215341.0,
+          "ppg_seconds": 29954.0,
+          "nominal_ecg_overlap_seconds": 29954.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 215424,
+          "end_seconds_from_day1": 226453.0,
+          "ppg_seconds": 11029.0,
+          "nominal_ecg_overlap_seconds": 11029.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 0.9999999403953552
+          }
+        },
+        {
+          "start_seconds_from_day1": 260187,
+          "end_seconds_from_day1": 325761.0,
+          "ppg_seconds": 65574.0,
+          "nominal_ecg_overlap_seconds": 65574.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": -1.017252593271678e-08,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 336424,
+          "end_seconds_from_day1": 384588.0,
+          "ppg_seconds": 48164.0,
+          "nominal_ecg_overlap_seconds": 48164.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 384672,
+          "end_seconds_from_day1": 413671.0,
+          "ppg_seconds": 28999.0,
+          "nominal_ecg_overlap_seconds": 28999.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 2.034505186543356e-08,
+            "std": 0.9999999403953552
+          }
+        },
+        {
+          "start_seconds_from_day1": 427402,
+          "end_seconds_from_day1": 476396.0,
+          "ppg_seconds": 48994.0,
+          "nominal_ecg_overlap_seconds": 48994.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 476484,
+          "end_seconds_from_day1": 494068.0,
+          "ppg_seconds": 17584.0,
+          "nominal_ecg_overlap_seconds": 17584.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        },
+        {
+          "start_seconds_from_day1": 494098,
+          "end_seconds_from_day1": 528272.0,
+          "ppg_seconds": 34174.0,
+          "nominal_ecg_overlap_seconds": 34174.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 2.034505186543356e-08,
+            "std": 0.9999999403953552
+          }
+        },
+        {
+          "start_seconds_from_day1": 533433,
+          "end_seconds_from_day1": 569532.0,
+          "ppg_seconds": 36099.0,
+          "nominal_ecg_overlap_seconds": 36099.0,
+          "first_30s_preprocessing": {
+            "accepted_by_current_basic_preprocessing": true,
+            "input_samples": 3000,
+            "output_samples": 1500,
+            "mean": 0.0,
+            "std": 1.0
+          }
+        }
+      ],
+      "ppg_hours": 116.93388888888889,
+      "nominal_ecg_overlap_hours": 116.93388888888889,
+      "ppg_segments_nonoverlapping": true
+    }
+  ]
+}
