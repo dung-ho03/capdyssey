@@ -1,0 +1,247 @@
+[
+  {
+    "subject": "p000946",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p075796",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p022954",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p025117",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p026377",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 29,
+    "excluded_windows": 11
+  },
+  {
+    "subject": "p043613",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 38,
+    "excluded_windows": 2
+  },
+  {
+    "subject": "p050089",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 34,
+    "excluded_windows": 6
+  },
+  {
+    "subject": "p063039",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p068956",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p069339",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p075371",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p077729",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p087275",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p079998",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p081349",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p085866",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p089565",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p092846",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p094847",
+    "label": 1,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p004829",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p013072",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p015852",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p016684",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p019608",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p023824",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 39,
+    "excluded_windows": 1
+  },
+  {
+    "subject": "p026964",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p029512",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 35,
+    "excluded_windows": 5
+  },
+  {
+    "subject": "p050384",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p055204",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p058932",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p062160",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 7,
+    "excluded_windows": 33
+  },
+  {
+    "subject": "p063628",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p087675",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p092289",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  },
+  {
+    "subject": "p097547",
+    "label": 0,
+    "total_windows": 40,
+    "kept_windows": 40,
+    "excluded_windows": 0
+  }
+]

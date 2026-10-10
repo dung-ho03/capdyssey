@@ -1,0 +1,20 @@
+{
+  "seed": 42,
+  "epochs": 20,
+  "batch_size": 64,
+  "device": "cuda",
+  "sampling_hz": 50,
+  "window_seconds": 30,
+  "normalization": "per-window mean/std",
+  "resampling": "125 to 50 Hz, scipy resample_poly 2/5",
+  "quality_filter": "nonfinite and near-zero variance only; NOT clinical signal quality",
+  "model": "small_cnn_v1",
+  "threshold": 0.5,
+  "git_commit": "eedd419546abc6ac959cb8d116f67d16681e12d6",
+  "training_script_sha256": "743af78b9efd312f4373d122f42819a8996c62b2a6b98153ca9fd2a316673a2d",
+  "numpy": "2.1.3",
+  "scipy": "1.16.3",
+  "torch": "2.11.0+cu130",
+  "source": "https://zenodo.org/records/15906524",
+  "label_scope": "AF status supplied per source record; not newly annotated 30-second episodes"
+}
