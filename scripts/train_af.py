@@ -19,6 +19,24 @@ ROOT = Path(__file__).resolve().parents[1]
 FS = 50
 SECONDS = 30
 
+def preprocess_window(raw, sampling_hz=125):
+    """Shared training/inference contract: exactly 30 seconds of raw PPG."""
+    from fractions import Fraction
+    raw = np.asarray(raw, dtype=np.float64)
+    if not np.isfinite(sampling_hz) or sampling_hz < 25 or sampling_hz > 2000:
+        raise ValueError('sampling_hz must be between 25 and 2000')
+    expected = sampling_hz * SECONDS
+    if raw.ndim != 1 or abs(len(raw) - expected) > 1e-6:
+        raise ValueError('Input must be a 1D array containing exactly 30 seconds')
+    if not np.isfinite(raw).all() or np.std(raw) < 1e-8:
+        raise ValueError('Missing, nonfinite, or flat PPG: cannot classify')
+    ratio = Fraction(str(FS / sampling_hz)).limit_denominator(10000)
+    window = resample_poly(raw, ratio.numerator, ratio.denominator)
+    scale = np.std(window)
+    if len(window) != FS * SECONDS or not np.isfinite(window).all() or scale < 1e-8:
+        raise ValueError('Invalid resampled PPG: cannot classify')
+    return ((window - window.mean()) / scale).astype(np.float32)
+
 def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False), encoding='utf-8')
 
@@ -63,13 +81,11 @@ def prepare(records):
         total = len(values) // (125 * SECONDS)
         for i in range(total):
             raw = values[i*125*SECONDS:(i+1)*125*SECONDS]
-            if not np.isfinite(raw).all() or np.std(raw) < 1e-8:
+            try:
+                window = preprocess_window(raw)
+            except ValueError:
                 continue
-            window = resample_poly(raw, 2, 5)
-            scale = np.std(window)
-            if not np.isfinite(window).all() or scale < 1e-8:
-                continue
-            x.append(((window - window.mean()) / scale).astype(np.float32))
+            x.append(window)
             y.append(label); subjects.append(person); starts.append(i*SECONDS); kept += 1
         audit.append({'subject': person, 'label': label, 'total_windows': total, 'kept_windows': kept, 'excluded_windows': total-kept})
     return np.stack(x), np.array(y), np.array(subjects), np.array(starts), audit
@@ -125,6 +141,7 @@ def train(data_dir, output, epochs=20, seed=42, batch_size=64, device_name='auto
               'window_seconds': SECONDS, 'normalization': 'per-window mean/std', 'resampling': '125 to 50 Hz, scipy resample_poly 2/5',
               'quality_filter': 'nonfinite and near-zero variance only; NOT clinical signal quality',
               'model': 'small_cnn_v1', 'threshold': 0.5, 'git_commit': commit,
+              'training_script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'numpy': np.__version__, 'scipy': scipy.__version__, 'torch': str(torch.__version__),
               'source': 'https://zenodo.org/records/15906524',
               'label_scope': 'AF status supplied per source record; not newly annotated 30-second episodes'}
@@ -158,12 +175,15 @@ def train(data_dir, output, epochs=20, seed=42, batch_size=64, device_name='auto
         if stale >= 5: break
     checkpoint = torch.load(output/'best_model.pt', map_location=device, weights_only=True)
     model.load_state_dict(checkpoint['state_dict'])
+    vy, vp, _ = predict(model, loaders['val'], device)
     ty, tp, _ = predict(model, loaders['test'], device)
     test_people = persons[masks['test']]
     ids = np.unique(test_people)
     sy = np.array([ty[test_people==p][0] for p in ids])
     sp = np.array([tp[test_people==p].mean() for p in ids])
-    result = {'best_epoch': checkpoint['epoch'], 'test_window_metrics': metrics(ty,tp), 'test_subject_mean_score_metrics': metrics(sy,sp),
+    result = {'best_epoch': checkpoint['epoch'], 'validation_window_metrics': metrics(vy,vp),
+              'selection': 'Lowest validation BCE; fixed threshold 0.5; no test-based tuning',
+              'test_window_metrics': metrics(ty,tp), 'test_subject_mean_score_metrics': metrics(sy,sp),
               'warning': 'Small 35-subject bedside dataset; held-out subjects, not external validation. No IMU or clinical diagnosis validation.'}
     write_json(output/'metrics.json', result)
     with (output/'test_predictions.csv').open('w', newline='', encoding='utf-8') as f:

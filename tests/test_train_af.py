@@ -2,11 +2,38 @@ import importlib.util
 from pathlib import Path
 import unittest
 import numpy as np
+import sys
+import tempfile
+import torch
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
+from predict_af import classify
 
 spec=importlib.util.spec_from_file_location('train_af',Path(__file__).resolve().parents[1]/'scripts/train_af.py')
 module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
 
 class TrainingTests(unittest.TestCase):
+    def test_inference_roundtrip_matches_training(self):
+        wave = np.sin(np.arange(3750)/10)
+        model = module.make_model().eval()
+        x, *_ = module.prepare([('p1', 1, wave)])
+        with torch.no_grad():
+            expected = torch.sigmoid(model(torch.from_numpy(x[:, None]))).item()
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder)/'model.pt'
+            torch.save({'state_dict': model.state_dict(), 'config': {
+                'model':'small_cnn_v1', 'sampling_hz':50,
+                'window_seconds':30, 'threshold':0.5}}, path)
+            result = classify(path, wave, 125)
+        self.assertAlmostEqual(result['af_score'], expected, places=6)
+        self.assertEqual(result['prediction'], 'AF' if expected >= .5 else 'non-AF')
+
+    def test_invalid_inputs_are_not_classified(self):
+        for raw, hz in [(np.zeros(3750),125), (np.ones(10),125),
+                        (np.full(3750,np.nan),125), (np.ones((3750,1)),125),
+                        (np.ones(3750),0)]:
+            with self.assertRaises(ValueError): module.preprocess_window(raw,hz)
+        self.assertEqual(module.preprocess_window(np.sin(np.arange(3000)/10),100).shape,(1500,))
+
     def test_subject_splits_disjoint_complete_and_stratified(self):
         records=[(f'p{i:03d}',int(i<19),None) for i in range(35)]
         splits=module.split_subjects(records,42)
