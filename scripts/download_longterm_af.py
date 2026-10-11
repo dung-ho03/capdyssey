@@ -69,13 +69,19 @@ def fetch(item, folder):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--subjects', nargs='+', required=True, help='v3 IDs, e.g. 006 039; downloads BOTH PPG and ECG')
+    selection=parser.add_mutually_exclusive_group(required=True)
+    selection.add_argument('--subjects', nargs='+', help='v3 IDs, e.g. 006 039; downloads BOTH PPG and ECG')
+    selection.add_argument('--all', action='store_true', help='Download all 39 participants, both ECG and PPG')
     parser.add_argument('--output',type=Path,default=ROOT/'data/raw/longterm_af_v3')
     parser.add_argument('--plan',action='store_true')
     args=parser.parse_args()
     manifest=json.loads((ROOT/'data/longterm_af_v3_manifest.json').read_text())
-    ids=set(args.subjects)
     known={f['path'][:3] for f in manifest['files'] if f['path'].endswith('.mat')}
+    ids=known if args.all else set(args.subjects)
+    if args.all and len(ids)!=39: parser.error('Pinned release must contain 39 participants')
+    for person in ids:
+        if not {person+'_ECG.mat',person+'_PPG.mat'} <= {f['path'] for f in manifest['files']}:
+            parser.error('Missing ECG/PPG pair: '+person)
     if not ids <= known: parser.error('Unknown v3 subject ID')
     selected=[f for f in manifest['files'] if not f['path'].endswith('.mat') or f['path'][:3] in ids]
     print('License: CC BY-NC-SA 4.0; noncommercial research. Retain attribution and license.',flush=True)
@@ -83,6 +89,11 @@ def main():
     if args.plan:
         print('\n'.join(f['path'] for f in selected)); return
     args.output.mkdir(parents=True,exist_ok=True)
+    remaining=sum(max(0,f['bytes']-(args.output/(f['path']+'.part')).stat().st_size)
+        if (args.output/(f['path']+'.part')).exists() else f['bytes']
+        for f in selected if not (args.output/f['path']).exists())
+    if shutil.disk_usage(args.output).free < remaining+1024**3:
+        raise ValueError('Insufficient free disk for remaining raw files plus 1 GiB reserve; choose --output on a larger Colab storage volume')
     results=[]
     for item in selected:
         results.append(fetch(item,args.output))
