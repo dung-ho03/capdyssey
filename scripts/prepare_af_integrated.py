@@ -25,10 +25,15 @@ def normalized_windows(values, fs):
         yield start/fs,x
 
 def chars(dataset):
+    # MATLAB empty arrays store dimension metadata, not character code points.
+    if dataset.attrs.get('MATLAB_empty',0): return ''
     return ''.join(chr(int(v)) for v in dataset[()].ravel()).strip()
 
 def start_time(day,time):
+    if not day or not time: return None
     h,m,s=map(int,time.split(':'))
+    if int(day)<1 or not (0<=h<24 and 0<=m<60 and 0<=s<60):
+        raise ValueError('Invalid recording day/time')
     return (int(day)-1)*86400+h*3600+m*60+s
 
 def prepare(mimic,six,wrist,output):
@@ -81,17 +86,21 @@ def prepare(mimic,six,wrist,output):
             if checksum(p,'md5')!=official[p.name]['md5']:raise ValueError('Wrist MD5 mismatch')
         with h5py.File(ecgpath) as e,h5py.File(path) as p:
             ecgstart=start_time(chars(e['recording_startday']),chars(e['recording_starttime']))
+            if ecgstart is None: raise ValueError('Missing ECG start timestamp: '+person)
             ecgend=ecgstart+e['ECG'].size/500
             for i,ref in enumerate(p['PPG_GREEN'][()].ravel()):
                 begin=start_time(chars(p[p['recording_startday'][()].ravel()[i]]),chars(p[p['recording_starttime'][()].ravel()[i]]))
+                aligned=begin is not None
+                if not aligned: print('UNALIGNED missing PPG timestamp:',person,i,flush=True)
                 windows=[];starts=[];bad=0;outside=0
                 for offset,x in normalized_windows(p[ref][()].ravel(),100):
-                    if begin+offset<ecgstart or begin+offset+10>ecgend:outside+=1;continue
+                    if aligned and (begin+offset<ecgstart or begin+offset+10>ecgend):outside+=1;continue
                     if x is None:bad+=1;continue
-                    windows.append(x);starts.append(begin+offset)
+                    windows.append(x);starts.append(begin+offset if aligned else np.nan)
                 if not windows:continue
                 save('longterm_wrist_v3',person,f'{person}_{i:03d}',windows,[-1]*len(windows),starts,bad,
-                     {'ecg_overlap':'nominal header clock only','outside_ecg_windows':outside,
+                     {'ecg_overlap':'nominal header clock only' if aligned else 'unknown; missing PPG timestamp',
+                      'alignment_ready':aligned,'outside_ecg_windows':outside,
                       'labels':'No numeric AF annotation mapped. Codebook and interval alignment unresolved.'})
     manifest['sources']=sorted({s['source'] for s in manifest['shards']})
     manifest['readiness']=json.loads((ROOT/'data/af_integration_status.json').read_text())
