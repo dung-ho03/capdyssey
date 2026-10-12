@@ -7,11 +7,13 @@
 ## 현재 확인한 근거
 
 - 공식 설명은 의료진 검토를 거친 박동별 AF 주석과 ECG/PPG 동기화를 명시한다.
-- 표본 001, 006, 039의 AF_annotation 메타데이터에는 MATLAB double이라는 자료형만 있으며 숫자별 리듬 설명은 없다.
+- 초기 표본 검사 이후 39명 ECG·PPG 전체 78개 파일의 문자 데이터와 추가 속성을 Colab에서 검사했다. 오류 0개. 숫자별 리듬 설명은 발견되지 않았다. 상세 범위는 [공개 자료 재검토 기록](WRIST_SOURCE_AUDIT.md)을 참고한다.
 - 숫자 코드의 빈도나 RR 불규칙성만으로 정답의 의미를 역추정하지 않는다.
 - 39명 전체 구조 검사는 `scripts/audit_wrist_annotations.py`로 Colab에서 실행한다. 보고서는 Drive 전처리 번들의 `annotation_audit_39.json`에 저장한다.
 
 ## 연구진에게 확인할 질문 (미발송)
+
+공개 자료에서 연구진 문의를 필수 사용 조건으로 명시한 문구는 확인하지 못했다. 아래 질문은 코드 해석을 해결하기 위한 방법이며, 데이터 사용 허가가 반드시 필요하다는 의미가 아니다. 문의는 발송하지 않았다.
 
 We are using version 3 of your dataset, DOI 10.5281/zenodo.23187681, for a noncommercial university capstone on PPG-based AF detection.
 
