@@ -23,7 +23,7 @@ def preflight(manifest, status):
         if any(s['label_counts'].get('-1',0)>0 for s in rows):errors.append(source+': unresolved labels remain')
     return errors
 
-def train(bundle,output,epochs=20,provisional=False):
+def train(bundle,output,epochs=20,provisional=False,split_from=None):
     import google.colab  # User requires actual training/evaluation only in Colab.
     if epochs<1:raise ValueError('epochs must be positive')
     m=json.loads((bundle/'manifest.json').read_text())
@@ -59,6 +59,9 @@ def train(bundle,output,epochs=20,provisional=False):
             continue
         ids=np.unique(persons[sources==source]);rng.shuffle(ids);n=max(1,round(len(ids)*.2))
         split['test'].extend(ids[:n].tolist());split['val'].extend(ids[n:2*n].tolist());split['train'].extend(ids[2*n:].tolist())
+    if split_from is not None:
+        previous=json.loads(split_from.read_text())
+        if previous!=split:raise ValueError('Participant split changed from comparison baseline')
     masks={k:np.isin(persons,v) for k,v in split.items()}
     for name,mask in masks.items():
         for source in SOURCES:
@@ -88,6 +91,8 @@ def train(bundle,output,epochs=20,provisional=False):
         'evaluation_limit':'Source-internal held-out people; not held-out-source external validation'}
     config['provisional']=provisional
     config['label_assumptions']=m.get('assumptions',{})
+    config['preprocessing']=m.get('preprocessing','resample raw then z-score (legacy)')
+    config['comparison_split_sha256']=digest(split_from) if split_from else None
     config['distribution']='Research-only experiment; no raw data or model weights published by this script'
     write_json(output/'config.json',config);history=[];best=float('inf');stale=0
     for epoch in range(1,epochs+1):
@@ -110,4 +115,5 @@ def train(bundle,output,epochs=20,provisional=False):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--epochs',type=int,default=20)
     p.add_argument('--provisional',action='store_true',help='Explicit exploratory exact-binary labels; not official validation')
-    a=p.parse_args();train(a.bundle,a.output,a.epochs,a.provisional)
+    p.add_argument('--split-from',type=Path,help='Require exactly the previous participant split')
+    a=p.parse_args();train(a.bundle,a.output,a.epochs,a.provisional,a.split_from)
