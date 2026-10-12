@@ -6,6 +6,7 @@ from pathlib import Path
 import requests
 import shutil
 import time
+import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from download_data import safe_path
 
@@ -67,6 +68,28 @@ def fetch(item, folder):
         print('Downloaded and verified:',path.name,flush=True)
     return {'path':path.name,'bytes':path.stat().st_size,'md5':item['md5'], 'sha256':checksum(path,'sha256')}
 
+def fetch_staged(item, folder, staging):
+    """Assemble on runtime disk; publish only a verified complete file to Drive.
+
+    Never trust old Drive .part files: interrupted appends may contain gaps.
+    Completed destination files are retained and reused after verification.
+    """
+    destination=safe_path(folder,item['path'])
+    if destination.exists() and destination.stat().st_size==item['bytes'] and checksum(destination,'md5')==item['md5']:
+        print('Verified existing:',destination.name,flush=True)
+        return {'path':destination.name,'bytes':item['bytes'],'md5':item['md5'],'sha256':checksum(destination,'sha256')}
+    staging.mkdir(parents=True,exist_ok=True)
+    result=fetch(item,staging)
+    source=staging/item['path']
+    publishing=destination.with_name(destination.name+'.publishing')
+    shutil.copyfile(source,publishing)
+    if publishing.stat().st_size!=item['bytes'] or checksum(publishing,'md5')!=item['md5']:
+        raise ValueError('Drive copy failed verification; verified runtime file retained: '+item['path'])
+    publishing.replace(destination)
+    print('PERSISTED_AND_VERIFIED',destination.name,flush=True)
+    source.unlink()  # Only the verified temporary copy; Drive original is preserved.
+    return result
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     selection=parser.add_mutually_exclusive_group(required=True)
@@ -74,6 +97,8 @@ def main():
     selection.add_argument('--all', action='store_true', help='Download all 39 participants, both ECG and PPG')
     parser.add_argument('--output',type=Path,default=ROOT/'data/raw/longterm_af_v3')
     parser.add_argument('--plan',action='store_true')
+    parser.add_argument('--staging',type=Path,default=Path(tempfile.gettempdir())/'capdyssey_wrist_download',
+                        help='Runtime-local assembly directory; never use mounted Drive here')
     args=parser.parse_args()
     manifest=json.loads((ROOT/'data/longterm_af_v3_manifest.json').read_text())
     known={f['path'][:3] for f in manifest['files'] if f['path'].endswith('.mat')}
@@ -96,7 +121,7 @@ def main():
         raise ValueError('Insufficient free disk for remaining raw files plus 1 GiB reserve; choose --output on a larger Colab storage volume')
     results=[]
     for item in selected:
-        results.append(fetch(item,args.output))
+        results.append(fetch_staged(item,args.output,args.staging))
         (args.output/'download-status.json').write_text(json.dumps({'source':manifest['source'],'verified_files':results},indent=2))
 
 if __name__=='__main__': main()

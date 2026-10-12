@@ -5,9 +5,23 @@ import tempfile
 import unittest
 from unittest.mock import patch, MagicMock
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from download_longterm_af import fetch, ranged_download
+from download_longterm_af import fetch, ranged_download, fetch_staged
 
 class LongtermDownloadTests(unittest.TestCase):
+    def test_staging_ignores_bad_drive_partial_and_keeps_verified_destination(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder); drive=root/'drive';drive.mkdir()
+            stage=root/'stage';stage.mkdir()
+            (drive/'a.mat.part').write_bytes(b'old incomplete bytes')
+            (stage/'a.mat').write_bytes(b'abc')
+            item={'path':'a.mat','url':'https://example.invalid','bytes':3,'md5':hashlib.md5(b'abc').hexdigest()}
+            with patch('download_longterm_af.requests.get') as request:
+                fetch_staged(item,drive,stage)
+                fetch_staged(item,drive,stage)
+                request.assert_not_called()
+            self.assertEqual((drive/'a.mat').read_bytes(),b'abc')
+            self.assertEqual((drive/'a.mat.part').read_bytes(),b'old incomplete bytes')
+            self.assertFalse((stage/'a.mat').exists())
     def test_range_resume_keeps_existing_prefix(self):
         with tempfile.TemporaryDirectory() as folder:
             partial=Path(folder)/'a.part'; partial.write_bytes(b'ab')
