@@ -37,3 +37,24 @@ MIMIC와 6종 자료의 기존 정답 변환은 유지한다.
 Colab에서 `prepare_af_provisional.py` 실행 후 `train_af_integrated.py --provisional`로
 학습한다. 실제 결과는 Drive의 audit.json, split.json, config.json, history.json,
 metrics.json으로 확인한다. 코드 업로드는 학습 완료를 의미하지 않는다.
+
+## 이번 Colab 실행에서 확인한 준비 결과
+
+`PROVISIONAL_BUNDLE_COMPLETE 525` 확인. 구간 수는 실행 로그 기준이며 전부 10초다.
+
+| 자료 | 포함 참가자 | 추출 구간 |
+|---|---:|---:|
+| MIMIC PERform AF | 35 | 4,115 |
+| 6종 PPG | 91 | 46,827 |
+| 장기 손목 v3 | 36 | 113,849 |
+| 합계 | 162 | 164,791 |
+
+손목 39명 원본 중 025/035는 기존 GREEN 평탄 신호 제외,
+003은 QRS 범위 검사로 제외했다. 참가자·클래스당 2,000개 제한은 손목 자료에
+실제로 적용됐으며 39명 전체 구간을 학습했다고 표현하지 않는다.
+
+Colab 사전 점검에서 원본 ECG 39개와 기존 전처리 manifest가 확인됐고,
+합성 라벨 테스트 4개를 통과했다. Colab CPU 런타임에서 자료 준비 완료 후
+학습 프로세스를 시작했다. 이 기록 시점에는 최종 평가 성능이 아직 없다.
+Drive `Capdyssey/af_integrated/provisional_exact01_v1.log`에 진행 로그,
+`processed/provisional_exact01_v1/`에 별도 실험 자료가 저장된다.
