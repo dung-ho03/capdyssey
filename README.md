@@ -5,6 +5,12 @@ PPG에서 심방세동 의심 구간을 탐지하고, 움직임 정보를 활용
 
 ## 세 자료 통합 학습 진행
 
+**2026-10-13 잠정 실험 추가:** 손목 원본의 정확한 0/1만 사용하고 0.25/0.5와
+전환 경계를 제외하는 별도 실험을 진행합니다. 공식 라벨 확인 상태는 유지합니다.
+[변경 이유·잠정 가정·평가 방법](docs/AF_PROVISIONAL_EXPERIMENT.md) ·
+[잠정 실험 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/05_af_provisional_colab.ipynb).
+아래 내용은 기존 정식 검증 경로의 상태이며 잠정 실험 결과와 구분합니다.
+
 [세 자료 통합 코드·Colab 실행 범위](docs/AF_INTEGRATION_IMPLEMENTATION.md): 공통 10초 데이터 준비와 통합 학습기를 구현했습니다. 손목 정답 미확정 등 실행 조건이 남아 있으며 통합 성능 결과는 아직 없습니다.
 
 **10초 실행 확인:** MIMIC만 사용한 비교 기준을 실제 학습했습니다. 민감도 29.4%, 특이도 69.0%로 성능이 부족하며, 세 자료 통합 모델은 아직 아닙니다. [실측 결과·미완료 항목](docs/AF_10S_RUN.md).
