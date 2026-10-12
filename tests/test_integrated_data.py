@@ -1,12 +1,24 @@
 import sys
 from pathlib import Path
 import unittest
+import tempfile
 import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from prepare_af_integrated import normalized_windows,start_time,chars
+from prepare_af_integrated import normalized_windows,start_time,chars,resume_entries,atomic_json,digest
 from train_af_integrated import preflight,SOURCES
 
 class IntegratedDataTests(unittest.TestCase):
+    def test_resume_verifies_identity_and_detects_corruption(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            self.assertEqual(resume_entries(root,{'version':1}),[])
+            shard=root/'record.npz';shard.write_bytes(b'completed shard')
+            entries=[{'path':shard.name,'sha256':digest(shard)}]
+            atomic_json(root/'checkpoint.json',{'identity':{'version':1},'shards':entries})
+            self.assertEqual(resume_entries(root,{'version':1}),entries)
+            with self.assertRaises(ValueError):resume_entries(root,{'version':2})
+            shard.write_bytes(b'interrupted or changed')
+            with self.assertRaises(ValueError):resume_entries(root,{'version':1})
     def test_matlab_empty_date_is_not_decoded_as_nul_or_invented(self):
         class EmptyDate:
             attrs={'MATLAB_empty':1}

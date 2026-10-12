@@ -36,25 +36,62 @@ def start_time(day,time):
         raise ValueError('Invalid recording day/time')
     return (int(day)-1)*86400+h*3600+m*60+s
 
-def prepare(mimic,six,wrist,output):
+def atomic_json(path,value):
+    temporary=path.with_suffix(path.suffix+'.tmp')
+    write_json(temporary,value)
+    temporary.replace(path)
+
+def resume_entries(output,identity):
+    checkpoint=output/'checkpoint.json'
+    if not checkpoint.exists():
+        if any(output.iterdir()): raise ValueError('Existing bundle has no resumable checkpoint; use a new output directory')
+        return []
+    saved=json.loads(checkpoint.read_text())
+    if saved['identity']!=identity: raise ValueError('Source files or preprocessing code changed; use a new output directory')
+    for entry in saved['shards']:
+        path=output/entry['path']
+        if not path.is_file() or digest(path)!=entry['sha256']:
+            raise ValueError('Checkpoint shard missing or corrupt: '+entry['path'])
+    return saved['shards']
+
+def prepare(mimic,six,wrist,output,resume=False):
     # Refuse overwrite: keep a prior experiment reproducible.
-    output.mkdir(parents=True,exist_ok=False)
+    output.mkdir(parents=True,exist_ok=resume)
+    # Bind cached results to actual inputs and both preprocessing modules.
+    import train_af
+    identity={'code':digest(Path(__file__)),'preprocessing':digest(Path(train_af.__file__)),
+        'inputs':{}}
+    for source,folder in [('mimic',mimic),('six',six),('wrist',wrist)]:
+        for path in sorted(folder.rglob('*.mat')):
+            identity['inputs'][source+'/'+path.relative_to(folder).as_posix()]=digest(path)
+    previous=resume_entries(output,identity) if resume else []
+    completed={(s['source'],s['record']) for s in previous}
     manifest={'schema':1,'window_seconds':10,'sampling_hz':50,'shards':[],
         'labels':{'-1':'unresolved; excluded from supervised training','0':'non-AF','1':'AF'},
         'quality_filter':'finite and non-flat only; no clinical signal-quality model',
         'three_dataset_training_ready':False}
+    manifest['shards']=list(previous)
+    atomic_json(output/'checkpoint.json',{'identity':identity,'shards':manifest['shards']})
+    def reused(source,record):
+        if (source,record) not in completed:return False
+        print('REUSED',source,record,flush=True)
+        return True
     def save(source,person,record,windows,labels,starts,excluded,provenance):
         if not windows: raise ValueError('No valid windows: '+record)
         filename=f'{source}_{record}.npz'
-        np.savez_compressed(output/filename,x=np.stack(windows),y=np.asarray(labels,dtype=np.int8),
-                            start_seconds=np.asarray(starts,dtype=np.float64))
+        with (output/(filename+'.tmp')).open('wb') as stream:
+            np.savez_compressed(stream,x=np.stack(windows),y=np.asarray(labels,dtype=np.int8),
+                                start_seconds=np.asarray(starts,dtype=np.float64))
+        (output/(filename+'.tmp')).replace(output/filename)
         entry={'source':source,'subject':source+':'+person,'record':record,'path':filename,
             'sha256':digest(output/filename),'n':len(windows),'basic_exclusions':excluded,
             'label_counts':{str(k):int(np.sum(np.asarray(labels)==k)) for k in (-1,0,1)},
             'provenance':provenance}
         manifest['shards'].append(entry)
+        atomic_json(output/'checkpoint.json',{'identity':identity,'shards':manifest['shards']})
         print(source,record,entry['label_counts'],flush=True)
     for person,label,values in load_records(mimic):
+        if reused('mimic_perform_af',person):continue
         windows=[]; starts=[]; bad=0
         for start,x in normalized_windows(values,125):
             if x is None: bad+=1;continue
@@ -63,6 +100,7 @@ def prepare(mimic,six,wrist,output):
              {'label_scope':'source-record AF status','sampling_hz':125})
     inventory=json.loads((ROOT/'docs/verification-af-stage1-2026-10-10.json').read_text())['six_rhythms']
     for item in inventory:
+        if reused('six_rhythms',item['subject']):continue
         path=six/(item['subject']+'.mat')
         if digest(path)!=item['sha256']:raise ValueError('Source checksum mismatch: '+path.name)
         d=loadmat(path); labels=d['labels'].ravel(); values=d['ppgseg']
@@ -89,6 +127,7 @@ def prepare(mimic,six,wrist,output):
             if ecgstart is None: raise ValueError('Missing ECG start timestamp: '+person)
             ecgend=ecgstart+e['ECG'].size/500
             for i,ref in enumerate(p['PPG_GREEN'][()].ravel()):
+                if reused('longterm_wrist_v3',f'{person}_{i:03d}'):continue
                 begin=start_time(chars(p[p['recording_startday'][()].ravel()[i]]),chars(p[p['recording_starttime'][()].ravel()[i]]))
                 aligned=begin is not None
                 if not aligned: print('UNALIGNED missing PPG timestamp:',person,i,flush=True)
@@ -104,7 +143,7 @@ def prepare(mimic,six,wrist,output):
                       'labels':'No numeric AF annotation mapped. Codebook and interval alignment unresolved.'})
     manifest['sources']=sorted({s['source'] for s in manifest['shards']})
     manifest['readiness']=json.loads((ROOT/'data/af_integration_status.json').read_text())
-    write_json(output/'manifest.json',manifest)
+    atomic_json(output/'manifest.json',manifest)
     print('Preparation complete; wrist windows remain UNLABELED. Not a training result.',flush=True)
 
 if __name__=='__main__':
@@ -113,4 +152,5 @@ if __name__=='__main__':
     p.add_argument('--six',type=Path,required=True)
     p.add_argument('--wrist',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args();prepare(a.mimic,a.six,a.wrist,a.output)
+    p.add_argument('--resume',action='store_true',help='Verify and reuse completed shards from checkpoint.json')
+    a=p.parse_args();prepare(a.mimic,a.six,a.wrist,a.output,a.resume)
