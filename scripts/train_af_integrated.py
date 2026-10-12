@@ -23,11 +23,18 @@ def preflight(manifest, status):
         if any(s['label_counts'].get('-1',0)>0 for s in rows):errors.append(source+': unresolved labels remain')
     return errors
 
-def train(bundle,output,epochs=20):
+def train(bundle,output,epochs=20,provisional=False):
     import google.colab  # User requires actual training/evaluation only in Colab.
     if epochs<1:raise ValueError('epochs must be positive')
     m=json.loads((bundle/'manifest.json').read_text())
     status=json.loads((ROOT/'data/af_integration_status.json').read_text())
+    if provisional:
+        if m.get('protocol')!='exact_binary_guarded_v1' or m.get('provisional') is not True:
+            raise ValueError('Explicit provisional bundle required')
+        # Research-only opt-in; official readiness and public distribution remain unchanged.
+        status={'datasets':{s:{'ready':True} for s in SOURCES}}
+    elif m.get('provisional'):
+        raise ValueError('Provisional labels require --provisional')
     errors=preflight(m,status)
     if errors:raise ValueError('Integrated training not ready:\n'+'\n'.join(errors))
     xs=[];ys=[];persons=[];sources=[]
@@ -79,6 +86,9 @@ def train(bundle,output,epochs=20):
         'selection':'Mean of per-source validation BCE; fixed threshold .5',
         'sampling':'Equal source/class/subject-class mass, with replacement',
         'evaluation_limit':'Source-internal held-out people; not held-out-source external validation'}
+    config['provisional']=provisional
+    config['label_assumptions']=m.get('assumptions',{})
+    config['distribution']='Research-only experiment; no raw data or model weights published by this script'
     write_json(output/'config.json',config);history=[];best=float('inf');stale=0
     for epoch in range(1,epochs+1):
         model.train();total=0
@@ -99,4 +109,5 @@ def train(bundle,output,epochs=20):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--epochs',type=int,default=20)
-    a=p.parse_args();train(a.bundle,a.output,a.epochs)
+    p.add_argument('--provisional',action='store_true',help='Explicit exploratory exact-binary labels; not official validation')
+    a=p.parse_args();train(a.bundle,a.output,a.epochs,a.provisional)
