@@ -12,6 +12,8 @@ def run(base):
     import google.colab
     bundle=base/'processed/provisional_centered_v2'
     m=json.loads((bundle/'manifest.json').read_text())
+    parent=json.loads((base/'processed/integrated_10s_resume_v1/manifest.json').read_text())
+    original_shards={r['path']:r for r in parent['shards']}
     split=json.loads((base/'models/provisional_centered_v2/split.json').read_text())
     groups=[set(split[k]) for k in ('train','val','test')]
     assert not (groups[0]&groups[1] or groups[0]&groups[2] or groups[1]&groups[2]),'Subject split leakage'
@@ -28,7 +30,21 @@ def run(base):
             assert sum(r['subject'] in g for g in groups)==1,'Missing/nonunique split membership'
             with np.load(path,allow_pickle=False) as d:x=d['x'];y=d['y'];starts=d['start_seconds']
             assert x.shape==(r['n'],500) and y.shape==starts.shape==(r['n'],),'Shape mismatch'
-            assert np.isfinite(x).all() and np.isfinite(starts).all() and np.isin(y,[0,1]).all(),'Invalid samples/times/labels'
+            assert np.isfinite(x).all() and np.isin(y,[0,1]).all(),'Invalid samples/labels'
+            if r['source']=='six_rhythms':
+                # Independent source snippets have no continuous clock. Do not invent one.
+                from scipy.io import loadmat
+                assert np.isnan(starts).all(),'Six-rhythm snippets must not fabricate timestamps'
+                original=original_shards[r['path']]
+                rawpath=base/'raw/six_rhythms'/(r['record']+'.mat')
+                assert digest(rawpath)==original['provenance']['source_sha256'],'Six-rhythm raw hash mismatch'
+                selected=np.asarray(r['provenance']['original_window_indices'],dtype=int)
+                indices=np.asarray(original['provenance']['original_segment_indices'],dtype=int)[selected]
+                labels=loadmat(rawpath,variable_names=['labels'])['labels'].ravel()
+                assert np.isin(labels,range(6)).all() and np.all(indices>=0) and np.all(indices<len(labels)),'Invalid source rhythm/index'
+                assert np.array_equal(y,(labels[indices]==5).astype(np.int8)),'Six-rhythm source label mismatch'
+            else:
+                assert np.isfinite(starts).all(),'Missing timestamp in continuous recording'
             assert np.max(np.abs(x.mean(1)))<1e-4 and np.max(np.abs(x.std(1)-1))<1e-4,'Normalization mismatch'
             if r['source']=='longterm_wrist_v3':
                 person=r['subject'].split(':')[1];a=by_person[person]
