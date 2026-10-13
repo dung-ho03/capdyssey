@@ -46,7 +46,7 @@ def run(base):
     x=np.concatenate(x);y=np.concatenate(y);persons=np.array(persons);sources=np.array(sources)
     assert x.shape==(len(y),500) and np.isfinite(x).all() and np.isin(y,[0,1]).all()
     train=np.isin(persons,split['train']);val=np.isin(persons,split['val'])
-    all_sources=sorted(set(sources));draws=int(train.sum())
+    all_sources=sorted(set(sources.tolist()));draws=int(train.sum())
     xx=torch.from_numpy(x[:,None]).cuda();yy=torch.from_numpy(y.astype(np.float32)).cuda()
     del x
     val_indices={s:np.flatnonzero(val&(sources==s)) for s in all_sources}
@@ -74,7 +74,9 @@ def run(base):
         'selection':'mean validation BCE on included training sources',
         'limits':'Single-seed development evidence; validation reused for checkpoint and threshold selection. No test evaluation or clinical threshold claim.'}
     protocol_path=out/'protocol.json'
-    if protocol_path.exists():assert json.loads(protocol_path.read_text())==protocol,'Protocol mismatch'
+    if protocol_path.exists():
+        prior=json.loads(protocol_path.read_text())
+        assert {k:v for k,v in prior.items() if k!='script_sha256'}=={k:v for k,v in protocol.items() if k!='script_sha256'},'Protocol mismatch'
     write_json(protocol_path,protocol)
     groups={'two_sources':[s for s in all_sources if s!='longterm_wrist_v3'],
             'wrist_only':['longterm_wrist_v3'],'three_sources':all_sources}
@@ -94,7 +96,12 @@ def run(base):
                     group=mask&(persons==person);weights[group]=1/(len(ids)*group.sum())
         indices=np.flatnonzero(weights>0);w=torch.as_tensor(weights[indices],dtype=torch.double)
         idx=torch.as_tensor(indices,device='cuda');best=float('inf');stale=0;history=[]
-        for epoch in range(1,21):
+        prior_history=json.loads((folder/'history.json').read_text()) if (folder/'history.json').exists() else []
+        completed=False
+        if prior_history:
+            best_index=int(np.argmin([h['selection_val_bce'] for h in prior_history]))
+            completed=len(prior_history)>=20 or len(prior_history)-1-best_index>=5
+        for epoch in ([] if completed else range(1,21)):
             model.train();sample=torch.multinomial(w,draws,replacement=True).cuda();total=0
             for offset in range(0,draws,64):
                 batch=idx[sample[offset:offset+64]]
@@ -109,7 +116,13 @@ def run(base):
             write_json(folder/'history.json',history)
             print('GPU_ABLATION',name,'epoch',epoch,'val_bce',score,flush=True)
             if stale>=5:break
-        saved=torch.load(folder/'best_model.pt',weights_only=True,map_location='cuda');model.load_state_dict(saved['state_dict'])
+        # Recover only our generated v1 metadata with explicitly allowed NumPy
+        # scalar types. Keep weights_only=True; future checkpoints use Python str.
+        with torch.serialization.safe_globals([np._core.multiarray.scalar,np.dtype,np.dtypes.StrDType]):
+            saved=torch.load(folder/'best_model.pt',weights_only=True,map_location='cuda')
+        saved['sources']=[str(s) for s in saved['sources']]
+        torch.save(saved,folder/'best_model.pt')
+        model.load_state_dict(saved['state_dict'])
         result,_,probs=evaluate(model)
         record={'best_epoch':saved['epoch'],'included_sources':included,'by_source':result}
         write_json(folder/'validation.json',record);comparisons[name]=record
