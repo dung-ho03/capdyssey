@@ -87,17 +87,21 @@ def alignment_audit(base,out,rows,filtered,y,people,sources,starts,split):
     write_json(out/'alignment.json',result);print('ALIGNMENT_SUMMARY',json.dumps(summary),flush=True)
 
 
-def run(base):
+def run(base,two_sources=False):
     import google.colab
     if not torch.cuda.is_available():raise RuntimeError('Colab GPU required')
     torch.set_num_threads(2);torch.backends.cudnn.deterministic=True;torch.backends.cudnn.benchmark=False
-    out=base/'models/pulse_features_v1';out.mkdir(exist_ok=True)
+    allowed={'mimic_perform_af','six_rhythms'} if two_sources else {'mimic_perform_af','six_rhythms','longterm_wrist_v3'}
+    out=base/('models/main_two_sources_v1' if two_sources else 'models/pulse_features_v1');out.mkdir(exist_ok=True)
     bundle=base/'processed/provisional_centered_v2';m=json.loads((bundle/'manifest.json').read_text())
     audit=json.loads((base/'audits/prepared_bundle/report.json').read_text())
     assert audit['structural_checks_passed'] and audit['bundle_sha256']==digest(bundle/'manifest.json')
     splitfile=base/'models/provisional_centered_v2/split.json';split=json.loads(splitfile.read_text())
     assert not any(set(split[a])&set(split[b]) for a,b in [('train','val'),('train','test'),('val','test')])
     identity={'bundle':digest(bundle/'manifest.json'),'split':digest(splitfile),'script':digest(Path(__file__))}
+    if two_sources:
+        identity['sources']=sorted(allowed)
+        identity['dependencies']={name:digest(Path(__file__).with_name(name)) for name in ['train_af.py','train_af_rhythm.py','prepare_af_integrated.py']}
     if (out/'identity.json').exists():assert json.loads((out/'identity.json').read_text())==identity,'Changed experiment identity'
     write_json(out/'identity.json',identity)
     cache=out/'features.npz'
@@ -106,6 +110,7 @@ def run(base):
     else:
         waves=[];features=[];ys=[];people=[];sources=[];starts=[]
         for i,r in enumerate(m['shards']):
+            if r['source'] not in allowed:continue
             if r['subject'] in split['test']:continue
             assert digest(bundle/r['path'])==r['sha256']
             with np.load(bundle/r['path']) as d:f,p=extract(d['x']);ys.append(d['y']);starts.extend(d['start_seconds'])
@@ -115,7 +120,9 @@ def run(base):
         with (out/'features.tmp').open('wb') as f:np.savez_compressed(f,filtered=filtered,pulse=pulse,y=y,people=people,sources=sources,starts=starts)
         (out/'features.tmp').replace(cache)
     assert np.isfinite(filtered).all() and np.isfinite(pulse).all()
-    if not (out/'alignment.json').exists():alignment_audit(base,out,m['shards'],filtered,y,people,sources,starts,split)
+    assert set(sources.tolist())==allowed and np.isin(y,[0,1]).all()
+    assert set(people.tolist())<=set(split['train']+split['val']) and not set(people.tolist())&set(split['test'])
+    if not two_sources and not (out/'alignment.json').exists():alignment_audit(base,out,m['shards'],filtered,y,people,sources,starts,split)
     train=np.isin(people,split['train']);val=np.isin(people,split['val']);vid=np.flatnonzero(val)
     with torch.no_grad():
         spectral=[]
@@ -161,9 +168,9 @@ def run(base):
             result['peak_failure_by_source_class'][s]={str(label):float(np.mean(pulse[val][mask&(y[val]==label),11])) for label in (0,1)}
         write_json(folder/'validation.json',result);np.savez_compressed(folder/'validation_predictions.npz',y=y[val],p=prob,source=sources[val],subject=people[val])
         results[str(seed)]=result;print('PULSE_VALIDATION',json.dumps(result),flush=True)
-    write_json(out/'comparison.json',{'results':results,'test_used':False,'all_windows_retained':True,'limits':'Repeated development validation, provisional wrist labels, generic peak extraction. ECG only audit; no ECG features supplied to model.'})
+    write_json(out/'comparison.json',{'results':results,'sources':sorted(allowed),'test_used':False,'all_windows_retained':True,'limits':'Repeated development validation; generic peak extraction; PPG-only input. Wrist excluded from main model.' if two_sources else 'Repeated development validation, provisional wrist labels, generic peak extraction. ECG only audit; no ECG features supplied to model.'})
     print('PULSE_EXPERIMENT_COMPLETE',flush=True)
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--base',type=Path,required=True);run(p.parse_args().base)
+    p=argparse.ArgumentParser();p.add_argument('--base',type=Path,required=True);p.add_argument('--two-sources',action='store_true');args=p.parse_args();run(args.base,args.two_sources)
