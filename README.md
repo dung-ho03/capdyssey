@@ -5,6 +5,8 @@ PPG에서 심방세동 의심 구간을 탐지하고, 움직임 정보를 활용
 
 ## 현재 주 모델: MIMIC + 6종 PPG (2026-10-14)
 
+**최종본 확정 보류:** MIMIC 오탐 개선은 [새 전용 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/09_af_false_positive_colab.ipynb)에서 진행합니다. 기존 v1 ZIP은 추론 코드가 동작하는 연구 후보이며 성능 문제가 해결된 최종 모델이 아닙니다.
+
 손목 자료의 품질·정렬·잠정 라벨 문제는 별도 진단으로 보류하고, 두 자료의 주 모델을
 Colab T4에서 학습·평가했습니다. 공통 임계값0.286에서 기존 시험군 민감도/특이도는
 MIMIC **98.52%/69.97%**, 6종 **90.74%/80.80%**입니다. MIMIC 오탐 때문에
