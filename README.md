@@ -13,7 +13,7 @@ MIMIC 판정 구간 특이도 79.84%로 기존 목표를 모두 충족한 모델
 [변경 이유·지표 정의·한계](docs/QUALITY_AF_V2.md) ·
 [통합 실행 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/11_quality_af_v2_colab.ipynb)
 
-모델 패키징과 새 통합 입력 함수의 GPU 재현 확인은 위 Colab에서 실행합니다. 품질 미달은 비AF가 아닌 재측정으로 반환합니다.
+**Colab 패키징·16개 구간 저장 점수 재현 확인 완료:** `quality-af-v2-f29fbec1c9cf.zip`을 Drive에 저장했습니다. 품질 미달은 비AF가 아닌 재측정으로 반환합니다. 이 확인은 새로운 정확도 시험이나 팀 센서 검증이 아닙니다.
 
 ## 현재 주 모델: MIMIC + 6종 PPG (2026-10-14)
 
