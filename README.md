@@ -3,6 +3,18 @@ Capstone Design in hallym university
 
 PPG에서 심방세동 의심 구간을 탐지하고, 움직임 정보를 활용한 신호 품질 처리를 연구합니다.
 
+## 품질 RF + AF 통합 연구용 v2 (2026-11-10)
+
+원본 손상 특징을 추가한 RF와 MIMIC+6종 AF 모델을 연결한 후보입니다.
+개발 평가에서 MIMIC 오탐은 필터 없음 91개→51개, 전체 AF 검출률은 98.52%→96.62%였습니다.
+기존 RF 대비 MIMIC 오탐 수는 같고 AF를 5개 더 검출했습니다. 6종에서는 필터 없음 대비 오탐 감소가 1개에 그칩니다.
+MIMIC 판정 구간 특이도 79.84%로 기존 목표를 모두 충족한 모델은 아닙니다. 독립 시험·임상·팀 센서 검증 결과가 아닙니다.
+
+[변경 이유·지표 정의·한계](docs/QUALITY_AF_V2.md) ·
+[통합 실행 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/11_quality_af_v2_colab.ipynb)
+
+모델 패키징과 새 통합 입력 함수의 GPU 재현 확인은 위 Colab에서 실행합니다. 품질 미달은 비AF가 아닌 재측정으로 반환합니다.
+
 ## 현재 주 모델: MIMIC + 6종 PPG (2026-10-14)
 
 **최종본 확정 보류:** MIMIC 오탐 개선은 [새 전용 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/09_af_false_positive_colab.ipynb)에서 진행합니다. 기존 v1 ZIP은 추론 코드가 동작하는 연구 후보이며 성능 문제가 해결된 최종 모델이 아닙니다.
