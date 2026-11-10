@@ -9,6 +9,13 @@ from quality_af_v2 import QualityAF,digest
 from train_af import load_records
 
 
+def replay_samples(predictions):
+    """Keep the original within-record window ordinal before sampling rows."""
+    predictions=predictions.copy()
+    predictions['replay_window_index']=predictions.groupby(['source','record'],sort=False).cumcount()
+    return predictions.groupby(['source','y','accepted'],sort=True,group_keys=False).head(2)
+
+
 def run(base):
     import google.colab
     assert torch.cuda.is_available(),'통합 추론 확인에는 Colab GPU가 필요합니다. CPU로 대체하지 않습니다.'
@@ -65,7 +72,7 @@ def run(base):
     assert (predictions['split']=='test').all()
     predictions['accepted']=predictions.q_candidate>=cfg['quality_threshold']
     # Fixed first 2 per source/label/gate: a replay consistency check, not another performance estimate.
-    sample=predictions.groupby(['source','y','accepted'],sort=True,group_keys=False).head(2)
+    sample=replay_samples(predictions)
     bundle=base/'processed/provisional_centered_v2'
     rows={r['record']:r for r in readj(bundle/'manifest.json')['shards'] if r['source'] in ['mimic_perform_af','six_rhythms']}
     parents={r['path']:r for r in readj(base/'processed/integrated_10s_resume_v1/manifest.json')['shards']}
@@ -79,10 +86,13 @@ def run(base):
             fs=100
             # Existing CSV order matches shard order. Six-rhythm windows have no continuous timestamps.
             source_csv=base/'models/quality_af_fixed_v1'/(row['path']+'.csv')
+            assert digest(source_csv)==source_csv.with_suffix('.sha256').read_text().strip()
             existing=pd.read_csv(source_csv)
-            # Preserve row identity through the global DataFrame index, not probability-value matching.
-            loc=predictions[(predictions.source==r.source)&(predictions.record==r.record)].index.get_loc(r.Index)
+            # Explicit ordinal survives itertuples(index=False) and stratified row sampling.
+            loc=int(r.replay_window_index)
             assert len(existing)==row['n']
+            assert 0<=loc<len(existing) and int(existing.iloc[loc].y)==int(r.y)
+            np.testing.assert_allclose(existing.iloc[loc].p_af,r.p_af,atol=1e-7,rtol=1e-7)
             indices=np.asarray(parents[row['path']]['provenance']['original_segment_indices'])[row['provenance']['original_window_indices']]
             raw=loadmat(base/'raw/six_rhythms'/(r.record+'.mat'),variable_names=['ppgseg'])['ppgseg'][indices[loc]]
         actual=engine.predict(raw,fs)

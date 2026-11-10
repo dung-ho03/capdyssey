@@ -62,5 +62,21 @@ class ContractTests(unittest.TestCase):
         for cell in nb['cells']:
             if cell['cell_type']=='code':ast.parse(''.join(cell['source']))
 
+    def test_replay_keeps_window_position_without_dataframe_index(self):
+        tree=ast.parse((ROOT/'scripts/export_quality_af_v2.py').read_text(encoding='utf-8'))
+        fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='replay_samples')
+        scope={}
+        exec(compile(ast.Module(body=[fn],type_ignores=[]),'replay_samples','exec'),scope)
+        records=pd.DataFrame({'source':['six']*8,'record':['a']*4+['b']*4,
+            'y':[0,0,1,1,0,0,1,1],'accepted':[True,False,True,False]*2},
+            index=[10,12,17,20,25,31,37,48])
+        selected=scope['replay_samples'](records)
+        self.assertNotIn('replay_window_index',records.columns)
+        for row in selected.itertuples(index=False):
+            original=records[records.record==row.record].iloc[row.replay_window_index]
+            self.assertEqual(original.y,row.y)
+            self.assertEqual(original.accepted,row.accepted)
+            self.assertFalse(hasattr(row,'Index'))
+
 
 if __name__=='__main__':unittest.main()
