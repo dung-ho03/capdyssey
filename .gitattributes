@@ -1,0 +1,2 @@
+# Preserve exact bytes checked by the exported model manifest.
+/models/quality_af_v2_final/** -text

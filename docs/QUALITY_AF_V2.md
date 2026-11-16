@@ -1,5 +1,13 @@
 # 품질 RF + AF 통합 연구용 v2
 
+## 팀 전달용 (최종본): 학습 모델 Git 배포 (2026-11-16)
+
+학습 모델이 `models/quality_af_v2_final/`에 실제 파일로 포함되어 있습니다. `af_model.pt`, `quality_rf.joblib`, 설정·평가표·실행 코드가 함께 제공됩니다. Drive 원본 모델 및 manifest에 기록된 36개 파일의 SHA-256을 확인했습니다. 모델을 다시 학습하거나 개인 Drive를 연결할 필요가 없습니다.
+
+[전체 ZIP](<../models/Capdyssey_quality_af_v2(최종본).zip>) · [모델 폴더](../models/quality_af_v2_final/) · [팀원용 Colab (최종본)](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/12_quality_af_v2_final%28%EC%B5%9C%EC%A2%85%EB%B3%B8%29.ipynb)
+
+원래 `11_quality_af_v2_colab.ipynb`는 Drive 결과를 패키징하는 이전 절차로 남겨두었습니다. 팀원은 새 `12_quality_af_v2_final(최종본).ipynb`를 사용하세요. 추가 성능 개선이나 새 센서 검증을 주장하는 변경이 아니라, 검증된 패키지의 배포 위치와 사용 절차를 고친 것입니다.
+
 2026-11-10 사용자가 제공한 Colab 출력 기준. MIMIC+6종 AF 모델은 고정하고, BUT 품질 RF에 원본 손상 특징 9개를 추가했다. BUT 검증군에서 기존 RF와 동일한 불량 차단율 83.76%를 만족하는 기준 0.2739494799615767을 선택했다. AF 임계값은 기존 저장 체크포인트 값(약 0.286)을 그대로 사용한다. 원래 RF의 맥박 특징은 유지했다.
 
 ## 왜 변경했는가

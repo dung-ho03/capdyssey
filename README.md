@@ -3,6 +3,16 @@ Capstone Design in hallym university
 
 PPG에서 심방세동 의심 구간을 탐지하고, 움직임 정보를 활용한 신호 품질 처리를 연구합니다.
 
+## 팀 전달용 통합 AI (최종본)
+
+**학습된 AF 모델과 품질 RF를 Git에 포함했습니다. 개인 Drive 공유나 재학습 없이 불러올 수 있습니다.**
+
+- [학습 모델·설정·실행 코드 폴더](models/quality_af_v2_final/)
+- [전체 ZIP 다운로드](<models/Capdyssey_quality_af_v2(최종본).zip>) — 파일 화면에서 Download raw file 선택
+- [팀원용 Colab (최종본)](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/12_quality_af_v2_final%28%EC%B5%9C%EC%A2%85%EB%B3%B8%29.ipynb) — T4 GPU, Drive 연결 없이 저장 모델 로드
+
+`최종본`은 현재 팀 전달용 실행 버전의 이름입니다. 임상·새 센서 검증 완료라는 의미는 아닙니다. 아래 성능 한계는 그대로 유지됩니다.
+
 ## 품질 RF + AF 통합 연구용 v2 (2026-11-10)
 
 원본 손상 특징을 추가한 RF와 MIMIC+6종 AF 모델을 연결한 후보입니다.
