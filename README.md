@@ -3,6 +3,23 @@ Capstone Design in hallym university
 
 PPG에서 심방세동 의심 구간을 탐지하고, 움직임 정보를 활용한 신호 품질 처리를 연구합니다.
 
+## 손목 PPG 품질 분류 전용 실행
+
+좋은/나쁜 신호 분류만 필요한 경우 [품질 전용 가이드](docs/QUALITY_ONLY.md)를 사용하세요.
+기존 v2 RF를 CPU로 실행하며 AF 모델이나 GPU가 필요 없습니다.
+장치 타임스탬프·샘플 번호 검사, 독립 품질 라벨 평가, 참가자/활동/장치별 결과,
+같은 참가자 분할의 RF·확장 RF·선택적 CNN 재학습 코드를 제공합니다.
+
+```sh
+python -m pip install -r requirements-quality.txt
+python scripts/evaluate_quality_csv.py --manifest sessions.csv --data-root recordings --model models/quality_af_v2_final --labels labels.csv --out results/wrist_eval_01
+```
+
+[CPU용 Colab](notebooks/13_quality_only_colab.ipynb) · [새 모델 비교 학습](scripts/train_quality_models.py)
+
+코드·입력 검증을 추가한 것이며 손목 센서 성능 향상을 입증한 변경은 아닙니다.
+기존 학습 가중치와 동결된 AF 통합 패키지는 그대로 보존합니다.
+
 ## 팀 전달용 통합 AI (최종본)
 
 **학습된 AF 모델과 품질 RF를 Git에 포함했습니다. 개인 Drive 공유나 재학습 없이 불러올 수 있습니다.**

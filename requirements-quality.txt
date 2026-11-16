@@ -1,0 +1,9 @@
+# CPU-only quality inference, collection, evaluation and RF training (Python >=3.10).
+-r requirements.txt
+numpy>=2.0,<3
+scipy>=1.13,<2
+pandas>=2.2,<3
+scikit-learn==1.6.1
+joblib>=1.3,<2
+wfdb>=4.1,<5
+pyserial>=3.5,<4
