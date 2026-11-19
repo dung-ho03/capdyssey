@@ -1,0 +1,28 @@
+{
+  "candidate_rf_sha256": "32b342e3ecf16533f1ad0e52eb98a2b0745434473311a0c6a9539eb183a1a928",
+  "feature_script_sha256": "0ea3e8d56aa77e0660a16f0a36ea16686031c86c4e8e40a0db971feb3b64d691",
+  "feature_spec": {
+    "version": "raw-artifact-v1",
+    "span_quantiles": [
+      0.05,
+      0.95
+    ],
+    "low_slope_span_per_second": 0.01,
+    "spectrum_fs": 30,
+    "spectrum_segment": 240,
+    "local_window_seconds": 1,
+    "local_stride_seconds": 0.5,
+    "note": "Experimental features, not hard quality exclusion rules; no AF labels used to fit RF."
+  },
+  "rf_threshold": 0.2739494799615767,
+  "old_rf_threshold": 0.28272693235193613,
+  "old_rf_sha256": "055c1fe9183582ef7bdc75d1be2a214da3bc7916f31f076453e011cc3900f4b7",
+  "af_threshold": 0.28600000000000003,
+  "af_sha256": "c87f38786756576442355654fda942752f58e9c8e93887648e7a66dd0d3dc0db",
+  "split_sha256": "680f21b11019308a1a2d902cc58456ab5e3d9c2bdbb258054a11d111e9df3727",
+  "selection_sha256": "eef0e98ae36c840f926259309fc37d214a74459b5bd2298715f6e9d0faf821a7",
+  "script_sha256": "3bc255fb3974c7257601e64a14c77095a5d4a8b36226320a2273a6e46828b806",
+  "scope": "Previously reused test participants: DEVELOPMENT comparison, not independent final validation.",
+  "changes": "No training, no threshold search, no automatic production model replacement.",
+  "quality_truth": "No independent target quality labels; do not interpret AF deferrals alone as quality errors."
+}

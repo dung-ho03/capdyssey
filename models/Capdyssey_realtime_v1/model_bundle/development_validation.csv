@@ -1,0 +1,9 @@
+source,model,n,af_detection_pct,false_alarms,af_deferred,non_af_deferred,coverage_pct
+mimic_perform_af,none,838,98.12,29,0,0,100.0
+mimic_perform_af,original_BUT,838,85.36,24,67,5,91.41
+mimic_perform_af,new_BUT,838,96.44,27,12,2,98.33
+mimic_perform_af,new_matched_bad_rejection,838,93.51,26,28,3,96.3
+six_rhythms,none,11118,92.96,1741,0,0,100.0
+six_rhythms,original_BUT,11118,92.79,1717,5,62,99.4
+six_rhythms,new_BUT,11118,92.96,1739,0,3,99.97
+six_rhythms,new_matched_bad_rejection,11118,92.96,1735,1,11,99.89

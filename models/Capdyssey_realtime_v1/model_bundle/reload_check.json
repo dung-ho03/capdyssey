@@ -1,0 +1,87 @@
+{
+  "checked": 16,
+  "passed": true,
+  "scope": "Saved score replay only; not new accuracy validation",
+  "checks": [
+    {
+      "source": "mimic_perform_af",
+      "record": "p026964",
+      "status": "classified"
+    },
+    {
+      "source": "mimic_perform_af",
+      "record": "p026964",
+      "status": "classified"
+    },
+    {
+      "source": "mimic_perform_af",
+      "record": "p026964",
+      "status": "remeasure"
+    },
+    {
+      "source": "mimic_perform_af",
+      "record": "p026964",
+      "status": "remeasure"
+    },
+    {
+      "source": "mimic_perform_af",
+      "record": "p050089",
+      "status": "classified"
+    },
+    {
+      "source": "mimic_perform_af",
+      "record": "p050089",
+      "status": "classified"
+    },
+    {
+      "source": "mimic_perform_af",
+      "record": "p050089",
+      "status": "remeasure"
+    },
+    {
+      "source": "mimic_perform_af",
+      "record": "p050089",
+      "status": "remeasure"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_181220181216",
+      "status": "classified"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_181220181216",
+      "status": "classified"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_181220181216",
+      "status": "classified"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_181220181216",
+      "status": "classified"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_190320193334",
+      "status": "remeasure"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_190320193334",
+      "status": "remeasure"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_200827183815",
+      "status": "remeasure"
+    },
+    {
+      "source": "six_rhythms",
+      "record": "MPA_200827183815",
+      "status": "remeasure"
+    }
+  ]
+}

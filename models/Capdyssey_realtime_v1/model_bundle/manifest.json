@@ -1,0 +1,93 @@
+{
+  "format": "capdyssey-quality-af-v2",
+  "release_status": "research_prototype",
+  "quality_threshold": 0.2739494799615767,
+  "af_threshold": 0.28600000000000003,
+  "input": {
+    "seconds": 10,
+    "channel": "one raw PPG channel",
+    "sampling_hz": "actual rate supplied by caller",
+    "validated_source_rates": [
+      100,
+      125
+    ],
+    "sensor_transfer_validated": false
+  },
+  "output": "AF/non_AF only after quality pass; remeasure has no AF label or AF score",
+  "limitations": [
+    "Reused development test; not independent or clinical validation.",
+    "No wrist/longterm training in AF model. No demonstrated generalization to the team sensor.",
+    "Quality labels are BUT HR quality, not independent AF diagnostic quality.",
+    "MIMIC accepted specificity 79.84%; both-source 90% sensitivity/80% specificity target not met.",
+    "Six-rhythm false alarms fall only 1164 to 1163 relative to no quality filter.",
+    "Scores are model outputs, not verified clinical probabilities."
+  ],
+  "environment": {
+    "python": "3.13.16",
+    "numpy": "2.4.6",
+    "scipy": "1.16.3",
+    "sklearn": "1.6.1",
+    "torch": "2.14.1+cu130",
+    "joblib": "1.6.0"
+  },
+  "git_commit": "d297681bf9fa3423f55a85e43d5d8cba2abd78e8",
+  "sha256": {
+    "af_model.pt": "c87f38786756576442355654fda942752f58e9c8e93887648e7a66dd0d3dc0db",
+    "development_test.csv": "494351e59d4aa65a27ce6950bf18d392d5db91d5d59e5408f06c51dbe1706f20",
+    "development_validation.csv": "93dbaf09544f84f9d26d9289b987d310dded92943e36c7d48a3b2ff96a89e3d0",
+    "evaluation_protocol.json": "b4d170c427a913a996da89f98fddb4996a803011e9004e09a600780e05aa51e7",
+    "quality_rf.joblib": "32b342e3ecf16533f1ad0e52eb98a2b0745434473311a0c6a9539eb183a1a928",
+    "scripts/af_gpu_evidence.py": "b3dae1627704b7640659eea275140058f57137729993d21183918aeb9e62a712",
+    "scripts/af_model_v1.py": "03116c9ec3a5295683177dd2f6fc47d18a49263bd2a760b0991ece96efdc7390",
+    "scripts/af_pulse_experiment.py": "b5989b5df116daf9bb5f41ebd751f374f0d31350114f79c1456623e533f331c4",
+    "scripts/audit_af_boundaries.py": "df327240f33ede688e2fd50599891d41f41ce66f4af97d1f5977e586c24e7507",
+    "scripts/audit_af_errors.py": "2336f5094d4dad84a5d663e9a1acb6a19f461c80df3cc623e99ff5ea7ad8eead",
+    "scripts/audit_af_false_positives.py": "33773d9cfcb9eee0355a1ac697a1c17c73a6275024a5454ea0cdcf67d74de229",
+    "scripts/audit_af_stage1.py": "d198bd579aeade929168970c5d2b3cc901826105d2db32f5316e39bda4d6a341",
+    "scripts/audit_longterm_af.py": "6b35fadc885a74a4264140c8809c1aff6ce560cb4ab8daa9f35617887dcbe078",
+    "scripts/audit_prepared_bundle.py": "6769f12720d5b2656e4772e9bfdaa7ebe66ce1beba9f69ecb7a890f84acb60e2",
+    "scripts/audit_preprocessing_step1.py": "7e89caf605d829f4e8826cddc06aa7277a005e61b04157dcf2b41ff18b9cdf66",
+    "scripts/audit_wrist_annotations.py": "a1d8ff732b29a32697281b67c9e73b0bd1ac46f438a279a7f786bbcaeb37c878",
+    "scripts/but_quality_cnn_runtime.py": "e15f73aec17e977e614eded2662274b2b674fbf9a84460bda10f0aa260793748",
+    "scripts/but_quality_rf_runtime.py": "f27ef6dba9c728071b9bf77d357f39041474b14d09ec24592be79c1685ca458a",
+    "scripts/download_data.py": "3f6d0a99f10bb24e50528ccf60246cf676eb57f57b9b5f233346432a2cc74030",
+    "scripts/download_longterm_af.py": "6f1e3e9b3053ed3e1d72a6ce3559d2ad410b1ef3df3f2aafcaf50a7cc8c5e50b",
+    "scripts/download_six_for_audit.py": "032af5618b229d02cbdc15c07d62e926e9c32469d0971f1aa387f42eb5befd80",
+    "scripts/evaluate_quality_af.py": "400e62566be860a8dc84e204fe94c88c9087e1986a25360f2c19774466f4ffbd",
+    "scripts/export_af_v1.py": "c750fbf9e6e1f79e1bc25601c5a83927dd82d7a59e5dded3cc87b889f0d0db4d",
+    "scripts/export_quality_af_v2.py": "9dbb01e2839e025c4c1d016f48c6ee2fba7f68b1c47db85e381d24e8a301798c",
+    "scripts/finalize_af_candidate.py": "a70dd7f176bb851a28410dd7da29ecfe6c3a2eac15b7497e557f620d13b6c96b",
+    "scripts/finalize_two_sources.py": "ab70af2b9af61003accb173860fff8e36e918fa4a9f1b1692d7aefc0e0c53b42",
+    "scripts/predict_af.py": "7a1024ebc81f6544d1447bad397e60185a03335c43823733c08661e0a384ae33",
+    "scripts/prepare_af_centered.py": "c7492d67fd4f3d6009b2598612a1140159e5137049d33b983f937403909bb3f5",
+    "scripts/prepare_af_integrated.py": "e63265934259b9f4623c0a7e7173f2112a40d927013f6576017a11524f5cf91a",
+    "scripts/prepare_af_provisional.py": "2ae2e64c7eec1f2ed5f384cb0a16eae3a439593a65878b84cc541d943bb7f3ef",
+    "scripts/quality_af_v2.py": "9300b539ecc19cd49c73915891f230a0db6b479cf853aacbd7d3a1b724c7f48e",
+    "scripts/raw_quality_features.py": "ac74914e86bd66e94210fcf981fa412e55b43275192fe9a17cc3345ca945d34f",
+    "scripts/train_af.py": "ec48211f74cfaafcfcc10b02463f1722b3522120721dcc193c705f929ec05b0a",
+    "scripts/train_af_integrated.py": "f0c52e6136cd60e0865224ba925184cfee697ae6407f6a9892339ffd8d05194b",
+    "scripts/train_af_rhythm.py": "fac62d6120bbb5bd8456261673c0a6079925cc8fddb63191d98cbddc49813e37",
+    "scripts/train_team_quality.py": "513155b5ac0c43389d46d9e6e6caf6c451a6397ea65174ea4b739d8885b53451",
+    "IMU_사용법.md": "a3acd218c4e3bfdc8393a01d1993e27fed0b07d192b73180c78476d117dce40e",
+    "README.md": "701e2cb105d5bcd380107b9e67ce0ff3eaf2fa40101f80a65fa25c96f278ab65",
+    "README_PPG_ORIGINAL.md": "e9cd2e6010edf55b22bfc0d3012783780dcfa0e20a9a55a438c10bc6e59a17bd",
+    "scripts/imu_motion_gate.py": "a358f9845c1138711933ee20dc7bcdb83b6b19595ce0124c6fb7d3a85091234c",
+    "scripts/quality_af_imu.py": "49663946cd217dd85c06fa32f2371e60f31ed2162d1a49d43cd1210db8c08d27",
+    "tests/test_imu.py": "37c33bf1e43722564892acf0aeaba256cbb528c73e1892f54c883eb414bce2d6"
+  },
+  "imu_extension": {
+    "version": "1.0.0",
+    "entrypoint": "quality_af_imu.MotionQualityAF",
+    "source_github_zip_blob_sha": "6363233b712754c6781bc28ac3d1ec6528bf9a07",
+    "thresholds_validated_on_hardware": false,
+    "rms_threshold_g": 0.1,
+    "peak_threshold_g": 0.5,
+    "motion_result": {
+      "status": "excluded",
+      "reason": "motion_detected",
+      "label": null
+    },
+    "missing_invalid_imu": "remeasure",
+    "model_weights_changed": false
+  }
+}
