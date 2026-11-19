@@ -30,9 +30,9 @@
 Arduino IDE에서 Seeed 공식 XIAO nRF52840 Sense 설치 안내에 맞는 보드를 선택하고 다음 라이브러리를 설치합니다.
 
 - SparkFun MAX3010x Pulse and Proximity Sensor Library (`MAX30105.h`)
-- Seeed Arduino LSM6DS3 (`LSM6DS3.h`, `LSM6DS3` 클래스)
+- Seeed nRF52 Boards 1.1.13에 포함된 Adafruit TinyUSB. 내장 가속도는 보드의 전용 핀에서 직접 읽습니다.
 
-`firmware/capdyssey_usb/capdyssey_usb.ino`를 열어 컴파일 후 보드에 업로드합니다. 이 코드는 **실제 보드에서 아직 컴파일·업로드 검증되지 않은 참조 구현**입니다. 같은 이름의 다른 IMU 라이브러리는 API가 다를 수 있습니다. 센서는 Expansion Base의 I2C Grove 포트에 Grove–Qwiic 케이블로 연결한 구성을 전제로 합니다.
+`firmware/capdyssey_usb/capdyssey_usb.ino`를 열어 컴파일 후 보드에 업로드합니다. 2026-11-19 XIAO Sense에서 파형 수신과 Colab 응답을 확인했습니다. 앱이 START를 보내면 전송을 시작합니다. 센서는 Expansion Base의 I2C Grove 포트에 Grove–Qwiic 케이블로 연결한 구성을 전제로 합니다.
 
 USB 데이터 케이블로 PC에 연결한 후 Arduino Serial Monitor를 닫습니다. PC 화면에서 예시 모드를 해제하고 포트를 선택합니다. 먼저 분석 주소를 비운 채로 측정을 시작해 실제 파형과 저장 파일을 확인하세요.
 

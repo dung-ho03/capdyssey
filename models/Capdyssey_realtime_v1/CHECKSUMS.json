@@ -1,7 +1,7 @@
 {
   "Colab_realtime_server.ipynb": "960a4e9bfd476c68b476fbd4105fc25ff6fb1f4e685e0a696fac1472a61098e7",
   "desktop_app.py": "66bb91c976f8e6f8f172ee185c3a2544ab3f32d67e6e10f81695d6660ff66f59",
-  "firmware/capdyssey_usb/capdyssey_usb.ino": "dd437634766eb22a529f95b432fceb39b76d4ece0ae7f0620e9f75541c270613",
+  "firmware/capdyssey_usb/capdyssey_usb.ino": "b73a86d36acb0ef437eab016094f3450e071866ef07d06af8517f667fa841f8a",
   "model_bundle/af_model.pt": "c87f38786756576442355654fda942752f58e9c8e93887648e7a66dd0d3dc0db",
   "model_bundle/development_test.csv": "494351e59d4aa65a27ce6950bf18d392d5db91d5d59e5408f06c51dbe1706f20",
   "model_bundle/development_validation.csv": "93dbaf09544f84f9d26d9289b987d310dded92943e36c7d48a3b2ff96a89e3d0",
@@ -46,7 +46,7 @@
   "model_bundle/scripts/train_af_rhythm.py": "fac62d6120bbb5bd8456261673c0a6079925cc8fddb63191d98cbddc49813e37",
   "model_bundle/scripts/train_team_quality.py": "513155b5ac0c43389d46d9e6e6caf6c451a6397ea65174ea4b739d8885b53451",
   "model_bundle/tests/test_imu.py": "37c33bf1e43722564892acf0aeaba256cbb528c73e1892f54c883eb414bce2d6",
-  "README.md": "d6d003bb0975477eea85efc50ac679152fcc30aa7dbf1ed762c38edaa96d7845",
+  "README.md": "3f03c86c5a84e22bc4d7f8ed579f9c40a86beb1bd4e1cf2ce1d706b76f160793",
   "realtime/__init__.py": "c356e65daa1ef4533c2f96f1e25955c25a8ace9d5666ebf3f1854231b3bb51ee",
   "realtime/analysis.py": "c80265b65a5e3a3a390a6530014f26f4dbb54cc270ec2ec802851ff7be0ffe2e",
   "realtime/client.py": "bb893ab5cec470b63549b924ad3fdefd7e362fdd8599dc7144000467b5b28508",
@@ -59,5 +59,5 @@
   "setup_windows.bat": "5ddd1faf87d86c14c54faa10a36fe4964f3482f3e7d1ffb475660e4004c03955",
   "tests/gui_smoke.py": "e111e21a4814e8c18464e471b12c8c8fc852e19c76f0675f2e2309a563623c12",
   "tests/test_streaming.py": "dd0db6d083b31c499ad1471db1ad2bddacb092cc3ce967e60619f074e835b1cb",
-  "검증결과.md": "76c219be18fd3755588a4bfc7a4d86f68a37d1cf76e49dce4ce2a6263e0e610b"
+  "검증결과.md": "1a8f9822132a4cba18731c90c98aa8fc4149d7d66248d38b856c8aac24a18eab"
 }
