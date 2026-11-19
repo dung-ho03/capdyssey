@@ -75,7 +75,42 @@ bool readPPG(uint8_t reg,uint8_t *data,uint8_t len) {
   for(int i=0;i<len;i++) data[i]=Wire.read();
   return true;
 }
+bool ppgReady = false;
+bool initializeIMU() {
+  pinMode(imuSda, INPUT); pinMode(imuScl, INPUT);
+  // Seeed nRF52 core equivalent of the official LSM6DS3 P1.08 high-drive setting.
+  pinMode(PIN_LSM6DS3TR_C_POWER, OUTPUT_H0H1);
+  digitalWrite(PIN_LSM6DS3TR_C_POWER, LOW);
+  delay(100);
+  digitalWrite(PIN_LSM6DS3TR_C_POWER, HIGH);
+  delay(250); releaseLine(imuSda); releaseLine(imuScl);
+  uint8_t id;
+  initError = "imu_id";
+  bool found = false;
+  int ids[2] = {-1,-1};
+  for (int i=0; i<2; i++) {
+    imuAddress = 0x6A+i;
+    if (imuRead(0x0F,&id,1)) {
+      ids[i]=id;
+      if (id==0x69 || id==0x6A) { found=true; break; }
+    }
+  }
+  if (!found) {
+    snprintf(imuDiagnostic,sizeof(imuDiagnostic),"imu_id addr6A=%d addr6B=%d SDA=%d SCL=%d",ids[0],ids[1],digitalRead(imuSda),digitalRead(imuScl));
+    initError=imuDiagnostic;
+    return false;
+  }
+  initError = "imu_config";
+  if (!imuWrite(0x12,0x44) || !imuWrite(0x10,0x48)) return false; // BDU, increment, 104 Hz, +/-4g
+  delay(30);
+  // One raw sample per 100 Hz period; averaging must remain 1.
+  // Red + IR acquisition; only raw RED is sent to the current model.
+
+  ppg.disableFIFORollover();
+  return true;
+}
 void startStream() {
+  if (!sensorsOK && ppgReady) sensorsOK = initializeIMU();
   if (!sensorsOK) { Serial.print("#ERROR,"); Serial.println(initError); return; }
   ppg.shutDown(); ppg.clearFIFO(); ppg.wakeUp();
   while (ppg.available()) ppg.nextSample();
@@ -91,33 +126,8 @@ void setup() {
   initError = "ppg_not_found";
   if (!ppg.begin(Wire, I2C_SPEED_FAST)) return;
   ppg.setup(0x1F, 1, 2, 100, 411, 4096);
-  pinMode(PIN_LSM6DS3TR_C_POWER, OUTPUT);
-  digitalWrite(PIN_LSM6DS3TR_C_POWER, HIGH);
-  delay(100); releaseLine(imuSda); releaseLine(imuScl);
-  uint8_t id;
-  initError = "imu_id";
-  bool found = false;
-  int ids[2] = {-1,-1};
-  for (int i=0; i<2; i++) {
-    imuAddress = 0x6A+i;
-    if (imuRead(0x0F,&id,1)) {
-      ids[i]=id;
-      if (id==0x69 || id==0x6A) { found=true; break; }
-    }
-  }
-  if (!found) {
-    snprintf(imuDiagnostic,sizeof(imuDiagnostic),"imu_id addr6A=%d addr6B=%d SDA=%d SCL=%d",ids[0],ids[1],digitalRead(imuSda),digitalRead(imuScl));
-    initError=imuDiagnostic;
-    return;
-  }
-  initError = "imu_config";
-  if (!imuWrite(0x12,0x44) || !imuWrite(0x10,0x48)) return; // BDU, increment, 104 Hz, +/-4g
-  delay(30);
-  // One raw sample per 100 Hz period; averaging must remain 1.
-  // Red + IR acquisition; only raw RED is sent to the current model.
-
-  ppg.disableFIFORollover();
-  sensorsOK = true;
+  ppgReady = true;
+  sensorsOK = initializeIMU();
 }
 
 void loop() {
