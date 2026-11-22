@@ -19,14 +19,20 @@ def run(base):
     with ThreadPoolExecutor(max_workers=8) as pool:
         for i,_ in enumerate(pool.map(lambda v:download(*v),files),1):
             if i%250==0 or i==len(files):print('BUT_VERIFIED',i,len(files),flush=True)
-    rf_notebook=ROOT/'PPG_quality_RF_improved.ipynb'
-    cnn_notebook=next(ROOT.glob('02*11.ipynb'))
+    rf_notebook=ROOT/'notebooks/실험기록/05d_BUT_품질RF_재현.ipynb'
+    cnn_notebook=ROOT/'notebooks/실험기록/05c_BUT_품질CNN_재현.ipynb'
     identity={'rf_notebook_sha256':digest(rf_notebook),'cnn_notebook_sha256':digest(cnn_notebook),
         'script_sha256':digest(Path(__file__)),'gpu':torch.cuda.get_device_name(0),
         'note':'Team notebook reproduction, new run; not recovered original teammate weights.'}
     if (root/'source.json').exists():
         saved=json.loads((root/'source.json').read_text())
-        for key in ['rf_notebook_sha256','cnn_notebook_sha256','script_sha256']:assert saved[key]==identity[key],'Changed reproduction code; use a new version directory'
+        # The previous release used the same training cells at the repository root.
+        keys = ('rf_notebook_sha256', 'cnn_notebook_sha256', 'script_sha256')
+        saved_revision = [saved[key] for key in keys]
+        current_revision = [identity[key] for key in keys]
+        if saved_revision != current_revision:
+            migration = json.loads((ROOT/'data/team_quality_notebook_move.json').read_text())
+            assert saved_revision == migration['before'] and current_revision == migration['after'], 'Changed reproduction code; use a new version directory'
     else:atomic_json(root/'source.json',identity)
     from but_quality_rf_runtime import build_but_features,train_holdout
     if not (root/'rf/complete.json').exists():
