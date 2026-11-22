@@ -1,94 +1,46 @@
-# capdyssey
-Capstone Design in hallym university
+# Capdyssey | 손목 PPG 심방세동 의심 구간 선별 시제품
 
-PPG에서 심방세동 의심 구간을 탐지하고, 움직임 정보를 활용한 신호 품질 처리를 연구합니다.
+한림대학교 캡스톤디자인 팀 **캡디세이**는 손목에서 측정한 맥파(PPG)와 움직임을 PC로 전송하고, 10초마다 심방세동(AF) 의심 구간을 표시하는 연구용 시제품을 만들었습니다. 실제 장치에서 센서 수집, Colab 분석, 화면 표시, 기록 저장까지 확인했습니다.
 
-## 팀 전달용 통합 AI (최종본)
+## 바로 실행하기
 
-**학습된 AF 모델과 품질 RF를 Git에 포함했습니다. 개인 Drive 공유나 재학습 없이 불러올 수 있습니다.**
+| 하고 싶은 일 | 시작 위치 |
+|---|---|
+| 센서를 연결해 실시간으로 측정 | [Windows 앱 설치·센서 연결 안내](models/Capdyssey_realtime_v1/README.md) · [Arduino 펌웨어](models/Capdyssey_realtime_v1/firmware/capdyssey_usb/capdyssey_usb.ino) · [실시간 분석 서버를 Colab에서 열기](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/models/Capdyssey_realtime_v1/Colab_realtime_server.ipynb) |
+| 저장된 PPG로 통합 AI 실행 | [팀원용 최종본 Colab 열기](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/12_quality_af_v2_final%28%EC%B5%9C%EC%A2%85%EB%B3%B8%29.ipynb) · [학습된 모델과 실행 코드](models/quality_af_v2_final/) · [모델 ZIP](<models/Capdyssey_quality_af_v2(최종본).zip>) |
 
-- [학습 모델·설정·실행 코드 폴더](models/quality_af_v2_final/)
-- [전체 ZIP 다운로드](<models/Capdyssey_quality_af_v2(최종본).zip>) — 파일 화면에서 Download raw file 선택
-- [팀원용 Colab (최종본)](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/12_quality_af_v2_final%28%EC%B5%9C%EC%A2%85%EB%B3%B8%29.ipynb) — T4 GPU, Drive 연결 없이 저장 모델 로드
+실시간 측정은 Windows에서 `setup_windows.bat`로 최초 설치 후 `run_desktop.bat`로 시작합니다. Arduino 시리얼 모니터를 닫고 앱에서 예시 모드를 해제한 뒤 장치의 USB 포트를 선택하세요. 분석 주소를 비우면 파형 수신과 저장부터 확인할 수 있습니다. AF 판정까지 보려면 실시간 패키지 안내에 따라 Colab GPU 서버를 실행하고 출력된 주소와 비밀번호를 앱에 입력하세요.
 
-`최종본`은 현재 팀 전달용 실행 버전의 이름입니다. 임상·새 센서 검증 완료라는 의미는 아닙니다. 아래 성능 한계는 그대로 유지됩니다.
+## 10초 구간을 판정하는 방법
 
-## 품질 RF + AF 통합 연구용 v2 (2026-11-10)
+XIAO nRF52840 Sense와 Expansion Base에 연결한 SparkFun MAX30101에서 적색광 PPG를 100 Hz로 수집합니다. 보드는 PPG와 내장 가속도계의 3축 측정값을 USB로 전송하고, PC 앱은 겹치지 않는 10초 구간을 분석 서버로 보냅니다.
 
-원본 손상 특징을 추가한 RF와 MIMIC+6종 AF 모델을 연결한 후보입니다.
-개발 평가에서 MIMIC 오탐은 필터 없음 91개→51개, 전체 AF 검출률은 98.52%→96.62%였습니다.
-기존 RF 대비 MIMIC 오탐 수는 같고 AF를 5개 더 검출했습니다. 6종에서는 필터 없음 대비 오탐 감소가 1개에 그칩니다.
-MIMIC 판정 구간 특이도 79.84%로 기존 목표를 모두 충족한 모델은 아닙니다. 독립 시험·임상·팀 센서 검증 결과가 아닙니다.
+| 순서 | 검사 | 구간별 출력 |
+|---|---|---|
+| 1 | IMU로 움직임 확인 | 움직임이 크면 **움직임 제외**. 움직임 기준은 시제품용 잠정 설정입니다. |
+| 2 | BUT PPG로 학습한 Random Forest(RF)로 PPG 품질 확인 | 품질 점수가 0.27395(반올림) 미만이면 **재측정** |
+| 3 | MIMIC과 6종 리듬 PPG로 학습한 AF 모델 실행 | AF 점수가 0.286 이상이면 **AF 의심**, 미만이면 **비AF** |
 
-[변경 이유·지표 정의·한계](docs/QUALITY_AF_V2.md) ·
-[통합 실행 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/11_quality_af_v2_colab.ipynb)
+움직임 제외·재측정 구간은 AF 점수 없이 기록합니다. 비AF에는 다른 부정맥도 포함될 수 있습니다. PC의 기본 저장 위치는 사용자 홈 폴더의 `Capdyssey_recordings`이며, 세션별 `raw.csv`에는 센서 원본, `events.jsonl`에는 판정·점수·사유가 남습니다.
 
-**Colab 패키징·16개 구간 저장 점수 재현 확인 완료:** `quality-af-v2-f29fbec1c9cf.zip`을 Drive에 저장했습니다. 품질 미달은 비AF가 아닌 재측정으로 반환합니다. 이 확인은 새로운 정확도 시험이나 팀 센서 검증이 아닙니다.
+## 검증 결과
 
-## 현재 주 모델: MIMIC + 6종 PPG (2026-10-14)
+**공개 데이터에서 품질 필터를 적용한 효과.** 같은 시험 참가자를 개발 과정에서 다시 사용한 평가입니다. 전체 AF 검출률과 전체 비AF 오탐률은 재측정 구간을 분모에 포함하며, 판정 구간 특이도는 실제로 판정한 비AF 구간에서 계산합니다.
 
-**최종본 확정 보류:** MIMIC 오탐 개선은 [새 전용 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/09_af_false_positive_colab.ipynb)에서 진행합니다. 기존 v1 ZIP은 추론 코드가 동작하는 연구 후보이며 성능 문제가 해결된 최종 모델이 아닙니다.
+| 자료 | 품질 필터 | 전체 AF 검출률 | 오탐 수 | 전체 비AF 오탐률 | 판정 구간 특이도 | 판정 비율 |
+|---|---|---:|---:|---:|---:|---:|
+| MIMIC | 없음 | 98.52% | 91 | 30.03% | 69.97% | 100.00% |
+| MIMIC | 최종 RF | 96.62% | 51 | 16.83% | 79.84% | 92.27% |
+| 6종 리듬 PPG | 없음 | 90.74% | 1,164 | 19.20% | 80.80% | 100.00% |
+| 6종 리듬 PPG | 최종 RF | 90.63% | 1,163 | 19.19% | 80.74% | 99.69% |
 
-손목 자료의 품질·정렬·잠정 라벨 문제는 별도 진단으로 보류하고, 두 자료의 주 모델을
-Colab T4에서 학습·평가했습니다. 공통 임계값0.286에서 기존 시험군 민감도/특이도는
-MIMIC **98.52%/69.97%**, 6종 **90.74%/80.80%**입니다. MIMIC 오탐 때문에
-목표를 모두 충족한 최종 배포 모델은 아닙니다. 손목 일반화 또는 임상 검증 결과도 아닙니다.
+MIMIC에서는 오탐이 40구간 줄고 전체 AF 검출률이 1.90%p 낮아졌습니다. 6종에서는 오탐이 1구간 줄었습니다. MIMIC의 판정 구간 특이도는 목표 80%에 미달했습니다. [평가 방법과 한계](docs/QUALITY_AF_V2.md)
 
-[주 모델 변경 이유·실측 결과](docs/AF_MAIN_TWO_SOURCES.md) ·
-[팀 실행 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/08_main_two_sources_colab.ipynb)
+**실제 시제품 연결 확인(2026-11-19).** 한 실측 세션에서 PPG·가속도 12,241행을 저장했고, Colab에서 반환한 12구간은 움직임 제외 5개, 품질 미달 재측정 2개, AF 의심 4개, 비AF 1개였습니다. AF 의심 4개는 연속된 약 40초 동안의 모델 출력입니다. 동시 측정한 심전도가 없어 이 기록으로 실측 정확도나 오탐률을 산출할 수 없습니다. [실측 및 테스트 기록](models/Capdyssey_realtime_v1/검증결과.md)
 
-## 세 자료 통합 학습의 이전 진행 기록
+## 개발 과정과 재현 자료
 
-아래의 미실행·성능 부족 상태는 당시 기록입니다. 현재 상태는 위의 주 모델 보고서를 기준으로 합니다.
-
-**2026-10-13 잠정 실험 추가:** 손목 원본의 정확한 0/1만 사용하고 0.25/0.5와
-전환 경계를 제외하는 별도 실험을 진행합니다. 공식 라벨 확인 상태는 유지합니다.
-[변경 이유·잠정 가정·평가 방법](docs/AF_PROVISIONAL_EXPERIMENT.md) ·
-[잠정 실험 Colab](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/05_af_provisional_colab.ipynb).
-아래 내용은 기존 정식 검증 경로의 상태이며 잠정 실험 결과와 구분합니다.
-
-[세 자료 통합 코드·Colab 실행 범위](docs/AF_INTEGRATION_IMPLEMENTATION.md): 공통 10초 데이터 준비와 통합 학습기를 구현했습니다. 손목 정답 미확정 등 실행 조건이 남아 있으며 통합 성능 결과는 아직 없습니다.
-
-**10초 실행 확인:** MIMIC만 사용한 비교 기준을 실제 학습했습니다. 민감도 29.4%, 특이도 69.0%로 성능이 부족하며, 세 자료 통합 모델은 아직 아닙니다. [실측 결과·미완료 항목](docs/AF_10S_RUN.md).
-
-MIMIC·6종 리듬·장기 손목 PPG의 확인된 정답으로 학습하여 새로운 사람의 PPG만으로 AF/비AF를 예측하는 것이 목표입니다. 초기 모델의 과적합 징후와 높은 비AF 오분류율 때문에 참가자·리듬·측정 환경을 확대하며, 개선 여부는 별도 시험으로 검증합니다.
-
-현재 **1단계 조사 결과를 기록했으며 통합 학습은 아직 실행하지 않았습니다.** MIMIC과 6종의 정답 매핑을 확인했고, 6종의 구체적인 사용 범위와 손목 자료의 숫자 주석 정의는 확인 대기입니다. 6종은 10초 구간이므로 기존 30초 입력 계획을 수정해야 합니다. [단계별 진행 이유·검사 결과·남은 항목](docs/AF_INTEGRATED_TRAINING.md)을 확인하세요.
-
-## 과적합 징후에 따른 데이터 확장
-
-AI 학습에서 과적합 징후와 낮은 일반화 성능을 확인하여 더 많은 참가자의 AF·비AF 데이터가 필요하다고 판단했습니다. 학습 손실이 감소하는 동안 검증 손실이 증가한 실제 Colab 기록을 근거로, 39명의 장기 손목 PPG·ECG·AF 주석을 제공하는 공개 v3 자료를 추가 확보 대상으로 선정했습니다. 데이터 부족이 유일한 원인으로 확정된 것은 아니며 새 자료로 재학습한 결과는 아직 없습니다.
-
-[확장 이유·자료 이용 조건·확보 상태](docs/AF_DATA_EXPANSION.md) · [추가 자료 Colab 다운로드](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/02_additional_af_data_colab.ipynb)
-
-## 학습 완료된 AF/비AF v1
-
-[실측 결과·사용법·한계](docs/AF_MODEL_V1.md) · [저장된 모델](models/af_mimic_v1/best_model.pt)
-
-30초 PPG를 입력받아 AF/non-AF 점수를 반환하는 연구용 v1을 학습하고 저장했습니다. 시험 7명/241구간에서 민감도 75.3%, 특이도 47.1%, 균형 정확도 61.2%입니다. 오탐이 많아 제품 배포나 진단에 사용할 성능은 아닙니다. 저장 모델은 재학습 없이 사용할 수 있으며, Colab 마지막 부분에 예측 예제가 있습니다.
-
-## Colab에서 첫 모델 학습
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dung-ho03/capdyssey/blob/main/notebooks/01_af_baseline_colab.ipynb)
-
-위 버튼에서 열고 GPU 런타임을 선택한 뒤 셀을 위에서 아래로 실행하세요. MIMIC PERform AF 다운로드, 사람별 분할, 작은 CNN 학습, 오탐·미탐 평가, 모델 저장까지 수행합니다. GPU가 없으면 CPU를 사용합니다. 결과는 기본적으로 본인 Google Drive에 저장하며 Drive 연결 승인이 필요합니다. 무료 Colab GPU와 실행 시간은 보장되지 않습니다.
-
-이것은 AF 기초 모델이며 BUT 품질 모델과 IMU 융합은 포함하지 않습니다. 35명의 소규모 침상 자료이므로 손목 장치의 성능 검증을 대신하지 않습니다. 저장된 v1 결과와 별도로 재학습 결과는 실행 후 생성됩니다. Colab 계정에서의 전체 실행은 팀원이 직접 시작합니다.
-
-## 팀 연구 자료
-
-- [데이터 6종의 용도·정답·한계](docs/DATASETS.md)
-- [다운로드 및 실행 방법](data/README.md)
-- [이용 조건과 인용](docs/DATA_LICENSES.md)
-- [참고 논문과 읽는 순서](docs/PAPERS.md)
-- [2026-10-05 로컬 파일 검증 결과](docs/verification-2026-10-05.json)
-
-공식 출처에서 받은 자료를 재현할 수 있도록 다운로드 도구와 파일 검증 정보를 제공합니다. 원본 신호·가공 데이터·논문 PDF는 이 저장소에 포함하지 않습니다. 6종 리듬 PPG는 연구 사용 안내가 있으나 라이선스 범위가 미확정이어서 자동 다운로드 대상에서 제외했습니다.
-
-```sh
-python -m pip install -r requirements.txt
-python scripts/download_data.py --list
-python scripts/download_data.py mimic_af
-```
-
-데이터 확보·검증과 학습·추론 코드가 준비돼 있습니다. 데이터는 사람별로 분할하고, 비심방세동을 모두 정상이라고 표시하지 않습니다. 서로 다른 데이터의 PPG와 움직임을 임의로 짝지어 실제 동시 측정 자료처럼 사용하지 않습니다. 실제 학습 결과와 한계는 위 v1 보고서에 공개했습니다.
+- **초기 모델과 데이터 선택** — MIMIC 단독 모델에서 과적합 징후와 오탐을 확인한 뒤, 6종 리듬 PPG와 입력 길이를 10초로 맞추고 참가자 단위로 나누어 학습했습니다. [초기 모델 결과](docs/AF_MODEL_V1.md) · [두 자료로 학습한 근거](docs/AF_MAIN_TWO_SOURCES.md) · [오탐 분석](docs/AF_FALSE_POSITIVE_AUDIT.md)
+- **장기 손목 PPG·ECG 39명 자료** — 잠정 라벨로 탐색 실험을 했고, 주석 코드의 의미와 시간 정렬에 대한 불확실성이 남아 최종 모델 학습·평가에서 제외했습니다. [주석 조사](docs/WRIST_SOURCE_AUDIT.md) · [잠정 실험](docs/AF_PROVISIONAL_EXPERIMENT.md)
+- **품질 모델과 재현** — 품질 모델을 고정된 AF 모델 앞에 연결해 비교하고, 최종 RF·AF 모델을 다시 불러와 저장된 16개 구간의 점수가 재현되는지 확인했습니다. [품질 모델 비교](docs/QUALITY_AF_INTEGRATION.md) · [최종 모델 패키지](models/quality_af_v2_final/README.md)
+- **데이터와 코드** — [데이터 목록](docs/DATASETS.md) · [이용 조건과 인용](docs/DATA_LICENSES.md) · [데이터 준비](data/README.md) · [실험 노트북](notebooks/) · [테스트](tests/) · [실시간 앱 테스트](models/Capdyssey_realtime_v1/tests/)
