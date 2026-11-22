@@ -40,6 +40,8 @@ MIMIC에서는 오탐이 40구간 줄고 전체 AF 검출률이 1.90%p 낮아졌
 
 ## 개발 과정과 재현 자료
 
+[한국어로 보는 개발 순서와 실험 파일 안내](docs/개발순서와_실험파일.md)
+
 - **초기 모델과 데이터 선택** — MIMIC 단독 모델에서 과적합 징후와 오탐을 확인한 뒤, 6종 리듬 PPG와 입력 길이를 10초로 맞추고 참가자 단위로 나누어 학습했습니다. [초기 모델 결과](docs/AF_MODEL_V1.md) · [두 자료로 학습한 근거](docs/AF_MAIN_TWO_SOURCES.md) · [오탐 분석](docs/AF_FALSE_POSITIVE_AUDIT.md)
 - **장기 손목 PPG·ECG 39명 자료** — 잠정 라벨로 탐색 실험을 했고, 주석 코드의 의미와 시간 정렬에 대한 불확실성이 남아 최종 모델 학습·평가에서 제외했습니다. [주석 조사](docs/WRIST_SOURCE_AUDIT.md) · [잠정 실험](docs/AF_PROVISIONAL_EXPERIMENT.md)
 - **품질 모델과 재현** — 품질 모델을 고정된 AF 모델 앞에 연결해 비교하고, 최종 RF·AF 모델을 다시 불러와 저장된 16개 구간의 점수가 재현되는지 확인했습니다. [품질 모델 비교](docs/QUALITY_AF_INTEGRATION.md) · [최종 모델 패키지](models/quality_af_v2_final/README.md)

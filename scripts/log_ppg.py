@@ -1,9 +1,9 @@
 """XIAO가 시리얼로 보내는 PPG 값을 실시간으로 화면에 찍고 CSV로 저장합니다.
 
-사용법 (PC에서):
+사용법 (저장소 최상위 폴더에서):
     pip install pyserial
-    python log_ppg.py COM3 60 ppg.csv          # Windows 예시
-    python log_ppg.py /dev/cu.usbmodem1101 60 ppg.csv   # Mac 예시
+    python scripts/log_ppg.py COM3 60 ppg.csv          # Windows 예시
+    python scripts/log_ppg.py /dev/cu.usbmodem1101 60 ppg.csv   # Mac 예시
 
 인자: 포트이름  측정초(기본 60)  저장파일(기본 ppg.csv)
 Arduino 시리얼 모니터/플로터가 켜져 있으면 포트가 겹쳐서 열리지 않으니 먼저 닫으세요.

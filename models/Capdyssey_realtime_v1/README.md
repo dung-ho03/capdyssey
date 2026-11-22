@@ -15,6 +15,16 @@
 | `tests/` | 구간 누락, 움직임 제외, 통신 및 화면 테스트 |
 | `검증결과.md` | 실행한 검사와 아직 확인하지 못한 항목 |
 
+## 실시간 Colab에 올릴 ZIP 준비
+
+GitHub에서 저장소 전체를 다운로드해 압축을 푼 다음, `models` 폴더 안의 **Capdyssey_realtime_v1 폴더 자체**를 ZIP으로 압축합니다. 저장소 최상위 폴더에서 PowerShell로 만들 수도 있습니다.
+
+```powershell
+Compress-Archive -LiteralPath .\models\Capdyssey_realtime_v1 -DestinationPath .\Capdyssey_realtime_v1.zip
+```
+
+ZIP을 열었을 때 첫 폴더가 `Capdyssey_realtime_v1/`이고 그 안에 `desktop_app.py`와 `model_bundle/manifest.json`이 보여야 합니다. 이 ZIP을 아래 3단계의 Colab 업로드 창에서 선택하세요. 별도로 배포하는 `Capdyssey_quality_af_v2(최종본).zip`은 저장된 PPG 분석용입니다.
+
 ## 1. 먼저 예시 화면 실행
 
 1. ZIP을 새 폴더에 압축 해제합니다. 압축파일 안에서 바로 실행하지 않습니다.

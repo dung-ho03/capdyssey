@@ -46,7 +46,7 @@
   "model_bundle/scripts/train_af_rhythm.py": "fac62d6120bbb5bd8456261673c0a6079925cc8fddb63191d98cbddc49813e37",
   "model_bundle/scripts/train_team_quality.py": "513155b5ac0c43389d46d9e6e6caf6c451a6397ea65174ea4b739d8885b53451",
   "model_bundle/tests/test_imu.py": "37c33bf1e43722564892acf0aeaba256cbb528c73e1892f54c883eb414bce2d6",
-  "README.md": "3f03c86c5a84e22bc4d7f8ed579f9c40a86beb1bd4e1cf2ce1d706b76f160793",
+  "README.md": "f006ecf2e003fe5972d629bca668900ce6b8f649cea6ddb8f4bba5173ae51a8b",
   "realtime/__init__.py": "c356e65daa1ef4533c2f96f1e25955c25a8ace9d5666ebf3f1854231b3bb51ee",
   "realtime/analysis.py": "c80265b65a5e3a3a390a6530014f26f4dbb54cc270ec2ec802851ff7be0ffe2e",
   "realtime/client.py": "bb893ab5cec470b63549b924ad3fdefd7e362fdd8599dc7144000467b5b28508",
